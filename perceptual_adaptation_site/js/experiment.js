@@ -1,5 +1,5 @@
 // Experiment.js:
-// Main experiment script
+// Main experiment script with DataPipe integration
 
 // Get DOM elements
 const welcomeScreen = document.getElementById('welcome-screen');
@@ -22,6 +22,11 @@ const audioPlayer = document.getElementById('audio-player');
 const audioStatus = document.getElementById('audio-status');
 const trialFeedback = document.getElementById('trial-feedback');
 
+// DataPipe configuration
+const DATAPIPE_CONFIG = {
+  experiment_id: "MQLEEvIblJiX" // Experiment ID from DataPipe
+};
+
 // Experiment state
 let experimentState = {
   participantId: null,
@@ -32,7 +37,9 @@ let experimentState = {
   responses: [],
   audioPlayedThisTrial: false, // Renamed for clarity
   startTime: null,
-  trialStartTime: null
+  trialStartTime: null,
+  // DataPipe specific fields
+  filename: null
 };
 
 // Screen transition function (no changes needed)
@@ -90,13 +97,16 @@ function initExperiment() {
   loadExperimentState();
 }
 
-// Start the experiment (from welcome screen) (no changes needed)
+// Start the experiment (from welcome screen)
 function startExperiment() {
   // Get condition selection
   experimentState.condition = conditionSelect.value;
 
   // Generate a participant ID
   experimentState.participantId = generateParticipantId();
+  
+  // Generate a filename for DataPipe
+  experimentState.filename = `${experimentState.participantId}.csv`;
 
   // Prepare stimuli based on condition
   prepareStimuli();
@@ -148,7 +158,7 @@ function startTrial() {
     if (currentTrialSpan.textContent == experimentState.currentTrial + 1) {
         loadAudio(experimentState.stimuli[experimentState.currentTrial]);
     }
-  }, 500); // *** CHANGED DELAY TO 500ms ***
+  }, 500);
 }
 
 // Load audio file (triggers automatic play when ready)
@@ -217,8 +227,6 @@ function playAudioElement() {
   }
 }
 
-// REMOVED: playAudio function - no manual play needed
-
 // Handle audio playback end
 function handleAudioEnded() {
   // *** SIMPLIFIED: No replay logic needed ***
@@ -246,7 +254,6 @@ function nextTrial() {
     condition: experimentState.condition,
     stimulus: experimentState.stimuli[experimentState.currentTrial],
     response: responseInput.value.trim(),
-    // REMOVED: replayUsed tracking
     startTime: experimentState.trialStartTime,
     endTime: new Date().toISOString(),
     audioPlayedSuccessfully: experimentState.audioPlayedThisTrial // Track if audio played
@@ -269,7 +276,7 @@ function nextTrial() {
   }
 }
 
-// Complete the experiment (no changes needed here, unless you want to add final audio status)
+// Complete the experiment
 function completeExperiment() {
   // Update experiment completion status
   const completionData = {
@@ -278,13 +285,16 @@ function completeExperiment() {
     completionTime: new Date().toISOString()
   };
 
-  // Log completion data for retrieval
+  // Log completion data
   console.log('Experiment completed!', {
     participant: completionData,
     responses: experimentState.responses
   });
 
-  // Save data to localStorage
+  // Save data using DataPipe
+  saveExperimentDataToDataPipe();
+
+  // Also save data to localStorage as backup
   saveExperimentData();
 
   // Clear experiment state
@@ -313,10 +323,10 @@ function resetExperiment() {
     totalTrials: EXPERIMENT_CONFIG.totalTrials,
     stimuli: [],
     responses: [],
-    audioPlayedThisTrial: false, // Use new flag name
-    // REMOVED: replayAvailable, replayUsed
+    audioPlayedThisTrial: false,
     startTime: null,
-    trialStartTime: null
+    trialStartTime: null,
+    filename: null
   };
 
   // Reset UI elements
@@ -340,8 +350,7 @@ function updateProgressBar() {
 
 // Prepare stimuli based on condition (no changes needed)
 function prepareStimuli() {
-  // ... (keep existing logic) ...
-   if (experimentState.condition === 'single-talker') {
+  if (experimentState.condition === 'single-talker') {
     // Select a random talker (index into the singleTalkerFiles array)
     const talkerIndex = Math.floor(Math.random() * EXPERIMENT_CONFIG.singleTalkerFiles.length);
     experimentState.stimuli = EXPERIMENT_CONFIG.singleTalkerFiles[talkerIndex];
@@ -364,7 +373,7 @@ function prepareStimuli() {
   }
 }
 
-// Helper function to generate a participant ID (no changes needed)
+// Helper function to generate a participant ID
 function generateParticipantId() {
   return 'participant-' + Math.random().toString(36).substring(2, 15) +
     '-' + new Date().toISOString().replace(/[-:.]/g, '');
@@ -393,29 +402,18 @@ function loadExperimentState() {
            experimentState = {
               ...parsedState,
               audioPlayedThisTrial: false // Always reset this on load/resume
-              // Replay flags are implicitly removed as they are not in the base definition anymore
            };
            // Remove potentially lingering old replay flags from the loaded object itself
            delete experimentState.replayAvailable;
            delete experimentState.replayUsed;
-
 
           // If experiment was already started, skip to trial screen
           if (experimentState.currentTrial > 0) {
             showScreen(trialScreen);
             startTrial(); // Start the trial logic (will disable button, schedule audio)
           } else {
-             // If resuming at trial 0, still need to trigger the start sequence correctly
-             showScreen(instructionsScreen); // Go back to instructions to ensure clean start? Or directly to trial?
-             // Let's assume direct to trial if they resume
-             // showScreen(trialScreen);
-             // startTrial();
-             // Safer: go to instructions, user clicks Begin Trials again
-             // Let's stick to the original logic flow for now:
-             // If they were truly mid-trial, it should have saved currentTrial > 0
-             // If currentTrial is 0, they likely hadn't started trials yet.
-             // This part might need adjustment based on EXACT resume requirements.
-             // The code above jumps directly to trial if currentTrial > 0.
+             // If resuming at trial 0, go to instructions
+             showScreen(instructionsScreen);
           }
         } else {
           // Clear saved state if user chooses not to resume
@@ -432,13 +430,12 @@ function loadExperimentState() {
   }
 }
 
-
 // Clear experiment state from localStorage (no changes needed)
 function clearExperimentState() {
   localStorage.removeItem('experimentState');
 }
 
-// Save experiment data to localStorage (Added audioPlayedSuccessfully)
+// Save experiment data to localStorage (backup method)
 function saveExperimentData() {
   // Get existing data
   const existingData = JSON.parse(localStorage.getItem('experimentData') || '[]');
@@ -465,10 +462,87 @@ function saveExperimentData() {
   console.log('All experiment data:', existingData);
 }
 
+// Save experiment data to DataPipe
+function saveExperimentDataToDataPipe() {
+  // Format data for DataPipe
+  const formattedData = experimentState.responses.map(trial => {
+    return {
+      participant_id: experimentState.participantId,
+      condition: experimentState.condition,
+      trial_number: trial.trial,
+      stimulus: trial.stimulus,
+      response: trial.response,
+      audio_played_successfully: trial.audioPlayedSuccessfully ? 'true' : 'false',
+      start_time: trial.startTime,
+      end_time: trial.endTime,
+      experiment_start_time: experimentState.startTime,
+      experiment_end_time: new Date().toISOString()
+    };
+  });
 
-// Data export function (no changes needed)
+  // Convert to CSV string
+  const headers = Object.keys(formattedData[0]);
+  let csvContent = headers.join(',') + '\n';
+  
+  formattedData.forEach(row => {
+    const values = headers.map(header => {
+      const value = row[header] || '';
+      // Escape quotes and wrap in quotes if contains comma
+      const escaped = String(value).replace(/"/g, '""');
+      return /,/.test(escaped) ? `"${escaped}"` : escaped;
+    });
+    csvContent += values.join(',') + '\n';
+  });
+
+  // Create DataPipe save object
+  const dataPipeSave = {
+    type: 'pipe',
+    action: 'save',
+    experiment_id: DATAPIPE_CONFIG.experiment_id,
+    filename: experimentState.filename,
+    data_string: csvContent
+  };
+
+  // Log the data that would be sent
+  console.log('Sending data to DataPipe:', dataPipeSave);
+
+  // Use DataPipe to save data
+  // This would normally be using jsPsych's implementation
+  // But we're adapting it for our custom experiment setup
+  sendDataToDataPipe(dataPipeSave);
+}
+
+// Send data to DataPipe
+function sendDataToDataPipe(data) {
+  // Create FormData
+  const formData = new FormData();
+  formData.append('experiment_id', data.experiment_id);
+  formData.append('filename', data.filename);
+  formData.append('data_string', data.data_string);
+
+  // Send data to DataPipe
+  fetch('https://pipe.jspsych.org/api/data/', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`DataPipe API error: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(result => {
+    console.log('DataPipe save successful:', result);
+  })
+  .catch(error => {
+    console.error('Error sending data to DataPipe:', error);
+    // If there's an error, ensure we still have local backup
+    saveExperimentData();
+  });
+}
+
+// Data export function (for manual download if needed)
 function exportExperimentData() {
-    // ... (keep existing logic) ...
     const data = localStorage.getItem('experimentData');
     if (!data) {
         alert('No experiment data found to export.');

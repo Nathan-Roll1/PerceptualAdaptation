@@ -3,6 +3,9 @@ const EXPERIMENT_CONFIG = {
   // Number of trials in the experiment
   totalTrials: 10, // Change to 60 for the full experiment
   
+  // DataPipe experiment ID
+  dataPipeId: "MQLEEvIblJiX",
+  
   // Audio file paths for single-talker condition (organized by talker)
   singleTalkerFiles: [
     // Talker 005 (repeat files to reach totalTrials)
@@ -122,5 +125,10 @@ const EXPERIMENT_CONFIG = {
     "020": { gender: "M", language: "CMN", age: 22 },
     "030": { gender: "F", language: "CMN", age: 23 },
     "033": { gender: "M", language: "CMN", age: 25 }
+  },
+  
+  // DataPipe API Configuration
+  dataPipe: {
+    apiUrl: 'https://pipe.jspsych.org/api/data/'
   }
 };
