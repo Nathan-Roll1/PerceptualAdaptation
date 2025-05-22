@@ -1,0 +1,5 @@
+{
+    "original_sentence": "He told himself that as he washed himself and groomed his disheveled clothes",
+    "blanked_sentence": "he ______ himself that as he washed himself and groomed his disheveled clothes",
+    "actual": "told"
+}

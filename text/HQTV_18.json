@@ -1,0 +1,5 @@
+{
+    "original_sentence": "He was determined now to maintain a more certain hold upon himself",
+    "blanked_sentence": "he was determined now to maintain a more certain ______ himself",
+    "actual": "hold upon"
+}

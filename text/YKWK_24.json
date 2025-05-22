@@ -1,0 +1,5 @@
+{
+    "original_sentence": "They look as though he had been drumming a piano all his life",
+    "blanked_sentence": "they look as though ______ been drumming a piano all his life",
+    "actual": "he had"
+}

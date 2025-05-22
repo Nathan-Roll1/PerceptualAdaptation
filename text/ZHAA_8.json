@@ -1,0 +1,5 @@
+{
+    "original_sentence": "The lace was of a delicate ivory color faintly tinted with yellow",
+    "blanked_sentence": "the lace was of a delicate ivory color ______ tinted with yellow",
+    "actual": "faintly"
+}

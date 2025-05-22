@@ -1,0 +1,5 @@
+{
+    "original_sentence": "He went down in midstream searching the shadows of both shores",
+    "blanked_sentence": "he ______ down in midstream searching the shadows of both shores",
+    "actual": "went"
+}

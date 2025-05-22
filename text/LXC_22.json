@@ -1,0 +1,5 @@
+{
+    "original_sentence": "For an instant he saw Pierre drawn like a silhouette against the sky",
+    "blanked_sentence": "for an instant he saw ______ like a silhouette against the sky",
+    "actual": "pierre drawn"
+}

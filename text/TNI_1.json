@@ -1,0 +1,5 @@
+{
+    "original_sentence": "There's Fort Churchill a rifle shot beyond the ridge asleep",
+    "blanked_sentence": "there's fort churchill a rifle shot beyond the ridge ______",
+    "actual": "asleep"
+}

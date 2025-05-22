@@ -1,0 +1,5 @@
+{
+    "original_sentence": "Close beside him gleamed the white fangs of the wolf dog",
+    "blanked_sentence": "close ______ him gleamed the white fangs of the wolf dog",
+    "actual": "beside"
+}

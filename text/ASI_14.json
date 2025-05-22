@@ -1,0 +1,5 @@
+{
+    "original_sentence": "Then you can arrange yourself comfortably among these robes in the bow",
+    "blanked_sentence": "then you can arrange yourself comfortably among ______ in the bow",
+    "actual": "these robes"
+}

@@ -1,0 +1,5 @@
+{
+    "original_sentence": "A moment before he was intoxicated by a joy that was almost madness",
+    "blanked_sentence": "a moment before he was intoxicated by a joy that was ______ madness",
+    "actual": "almost"
+}

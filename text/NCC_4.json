@@ -1,0 +1,5 @@
+{
+    "original_sentence": "It was my reports from the north which chiefly induced people to buy",
+    "blanked_sentence": "it was my reports from the north which ______ induced people to buy",
+    "actual": "chiefly"
+}

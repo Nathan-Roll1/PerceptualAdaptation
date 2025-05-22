@@ -1,0 +1,5 @@
+{
+    "original_sentence": "MacDougall tapped his forehead suspiciously with a stubby forefinger",
+    "blanked_sentence": "macdougall tapped his forehead ______ with a stubby forefinger",
+    "actual": "suspiciously"
+}

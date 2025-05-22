@@ -1,0 +1,5 @@
+{
+    "original_sentence": "Perhaps she had already met her fate a little deeper in the forest",
+    "blanked_sentence": "perhaps she had already met her ______ a little deeper in the forest",
+    "actual": "fate"
+}

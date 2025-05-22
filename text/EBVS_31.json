@@ -1,0 +1,5 @@
+{
+    "original_sentence": "It happened to him at the Gallina Society in Oakland one afternoon",
+    "blanked_sentence": "it happened to him at the gallina society in oakland ______",
+    "actual": "one afternoon"
+}

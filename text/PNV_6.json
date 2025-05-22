@@ -1,0 +1,5 @@
+{
+    "original_sentence": "Since then some mysterious force has been fighting us at every step",
+    "blanked_sentence": "since then some mysterious ______ has been fighting us at every step",
+    "actual": "force"
+}

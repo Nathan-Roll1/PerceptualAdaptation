@@ -1,0 +1,5 @@
+{
+    "original_sentence": "He was a head shorter than his companion of almost delicate physique",
+    "blanked_sentence": "he was a head shorter than his companion ______ delicate physique",
+    "actual": "of almost"
+}
