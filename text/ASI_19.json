@@ -1,5 +1,5 @@
 {
-    "original_sentence": "About him everywhere were the evidences of luxury and of age",
-    "blanked_sentence": "about him ______ were the evidences of luxury and of age",
-    "actual": "everywhere"
+    "original_sentence": "He told himself that as he washed himself and groomed his disheveled clothes",
+    "blanked_sentence": "he told himself that as he washed himself and ______ clothes",
+    "actual": "groomed his disheveled"
 }

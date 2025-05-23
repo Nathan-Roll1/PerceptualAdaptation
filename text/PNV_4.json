@@ -1,5 +1,5 @@
 {
-    "original_sentence": "It was my reports from the north which chiefly induced people to buy",
-    "blanked_sentence": "it was my reports from the north which chiefly ______ people to buy",
-    "actual": "induced"
+    "original_sentence": "To my surprise he began to show actual enthusiasm in my favor",
+    "blanked_sentence": "______ he began to show actual enthusiasm in my favor",
+    "actual": "to my surprise"
 }

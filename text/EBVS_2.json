@@ -1,5 +1,5 @@
 {
-    "original_sentence": "I followed the line of the proposed railroad looking for chances",
-    "blanked_sentence": "i followed the line of the proposed ______ looking for chances",
-    "actual": "railroad"
+    "original_sentence": "Hardly were our plans made public before we were met by powerful opposition",
+    "blanked_sentence": "______ our plans made public before we were met by powerful opposition",
+    "actual": "hardly were"
 }

@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Close beside him gleamed the white fangs of the wolf dog",
-    "blanked_sentence": "close beside him gleamed the white fangs of the ______ dog",
-    "actual": "wolf"
+    "original_sentence": "The lace was of a delicate ivory color faintly tinted with yellow",
+    "blanked_sentence": "the lace was of a ______ faintly tinted with yellow",
+    "actual": "delicate ivory color"
 }

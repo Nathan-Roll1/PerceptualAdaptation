@@ -1,5 +1,5 @@
 {
-    "original_sentence": "It happened to him at the Gallina Society in Oakland one afternoon",
-    "blanked_sentence": "it ______ to him at the gallina society in oakland one afternoon",
-    "actual": "happened"
+    "original_sentence": "Out of his eighteen hundred he laid aside sixteen hundred each year",
+    "blanked_sentence": "out of ______ he laid aside sixteen hundred each year",
+    "actual": "his eighteen hundred"
 }

@@ -1,5 +1,5 @@
 {
-    "original_sentence": "At first he puzzled over something untoward he was sure had happened",
-    "blanked_sentence": "at first he puzzled over something untoward he was ______ had happened",
-    "actual": "sure"
+    "original_sentence": "He cried in such genuine dismay that she broke into hearty laughter",
+    "blanked_sentence": "he cried in such genuine dismay that she broke ______",
+    "actual": "into hearty laughter"
 }

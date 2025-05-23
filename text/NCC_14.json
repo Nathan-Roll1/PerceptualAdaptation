@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Then you can arrange yourself comfortably among these robes in the bow",
-    "blanked_sentence": "then you can ______ yourself comfortably among these robes in the bow",
-    "actual": "arrange"
+    "original_sentence": "Only it is so wonderful so almost impossible to believe",
+    "blanked_sentence": "only it is ______ almost impossible to believe",
+    "actual": "so wonderful so"
 }

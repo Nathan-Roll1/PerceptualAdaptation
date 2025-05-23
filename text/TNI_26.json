@@ -1,5 +1,5 @@
 {
-    "original_sentence": "She turned fearing that Jacques might see what was in her face",
-    "blanked_sentence": "she turned fearing that ______ see what was in her face",
-    "actual": "jacques might"
+    "original_sentence": "It drowned all sound that brute agony and death may have made",
+    "blanked_sentence": "it drowned all ______ agony and death may have made",
+    "actual": "sound that brute"
 }

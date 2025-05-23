@@ -1,5 +1,5 @@
 {
-    "original_sentence": "He was determined now to maintain a more certain hold upon himself",
-    "blanked_sentence": "he was determined now to maintain a more certain ______ upon himself",
-    "actual": "hold"
+    "original_sentence": "About him everywhere were the evidences of luxury and of age",
+    "blanked_sentence": "about him everywhere ______ of luxury and of age",
+    "actual": "were the evidences"
 }

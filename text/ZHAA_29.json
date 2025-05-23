@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Oppressive as the heat had been it was now even more oppressive",
-    "blanked_sentence": "______ as the heat had been it was now even more oppressive",
-    "actual": "oppressive"
+    "original_sentence": "At first he puzzled over something untoward he was sure had happened",
+    "blanked_sentence": "at first he ______ untoward he was sure had happened",
+    "actual": "puzzled over something"
 }

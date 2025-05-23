@@ -1,5 +1,5 @@
 {
-    "original_sentence": "They look as though he had been drumming a piano all his life",
-    "blanked_sentence": "they look as ______ he had been drumming a piano all his life",
-    "actual": "though"
+    "original_sentence": "Like a flash he launched himself into the feathered mass of the owl",
+    "blanked_sentence": "like a flash he launched himself into ______ of the owl",
+    "actual": "the feathered mass"
 }

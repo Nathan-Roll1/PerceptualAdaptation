@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Fresh cases still able to walk they clustered about the spokesman",
-    "blanked_sentence": "fresh cases still able to walk ______ clustered about the spokesman",
-    "actual": "they"
+    "original_sentence": "Oppressive as the heat had been it was now even more oppressive",
+    "blanked_sentence": "______ heat had been it was now even more oppressive",
+    "actual": "oppressive as the"
 }

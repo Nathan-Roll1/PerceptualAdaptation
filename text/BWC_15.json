@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Only it is so wonderful so almost impossible to believe",
-    "blanked_sentence": "only it is so wonderful so ______ impossible to believe",
-    "actual": "almost"
+    "original_sentence": "The emotion which she had suppressed burst forth now in a choking sob",
+    "blanked_sentence": "the emotion which she had suppressed burst forth now in ______",
+    "actual": "a choking sob"
 }

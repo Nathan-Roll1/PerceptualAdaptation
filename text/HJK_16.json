@@ -1,5 +1,5 @@
 {
-    "original_sentence": "The emotion which she had suppressed burst forth now in a choking sob",
-    "blanked_sentence": "the emotion which she had suppressed burst ______ now in a choking sob",
-    "actual": "forth"
+    "original_sentence": "Instead he joined her and they ate like two hungry children",
+    "blanked_sentence": "______ her and they ate like two hungry children",
+    "actual": "instead he joined"
 }

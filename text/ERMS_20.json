@@ -1,5 +1,5 @@
 {
-    "original_sentence": "He told himself that as he washed himself and groomed his disheveled clothes",
-    "blanked_sentence": "he told himself that as he ______ and groomed his disheveled clothes",
-    "actual": "washed himself"
+    "original_sentence": "A moment before he was intoxicated by a joy that was almost madness",
+    "blanked_sentence": "a moment before he was intoxicated by a joy that was ______",
+    "actual": "almost madness"
 }

@@ -1,5 +1,5 @@
 {
-    "original_sentence": "There's Fort Churchill a rifle shot beyond the ridge asleep",
-    "blanked_sentence": "there's fort churchill a rifle shot beyond the ______",
-    "actual": "ridge asleep"
+    "original_sentence": "I followed the line of the proposed railroad looking for chances",
+    "blanked_sentence": "i followed the ______ proposed railroad looking for chances",
+    "actual": "line of the"
 }

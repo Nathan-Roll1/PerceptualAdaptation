@@ -1,5 +1,5 @@
 {
-    "original_sentence": "He made sure that the magazine was loaded and resumed his paddling",
-    "blanked_sentence": "he made sure that the magazine was loaded and ______ his paddling",
-    "actual": "resumed"
+    "original_sentence": "He went down in midstream searching the shadows of both shores",
+    "blanked_sentence": "he went down in midstream searching the shadows of ______",
+    "actual": "both shores"
 }

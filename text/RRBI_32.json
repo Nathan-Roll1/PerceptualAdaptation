@@ -1,5 +1,0 @@
-{
-    "original_sentence": "He cried in such genuine dismay that she broke into hearty laughter",
-    "blanked_sentence": "he cried in such genuine dismay that she broke ______ hearty laughter",
-    "actual": "into"
-}

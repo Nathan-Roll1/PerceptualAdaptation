@@ -1,5 +1,5 @@
 {
-    "original_sentence": "MacDougall tapped his forehead suspiciously with a stubby forefinger",
-    "blanked_sentence": "macdougall tapped his ______ suspiciously with a stubby forefinger",
-    "actual": "forehead"
+    "original_sentence": "They look as though he had been drumming a piano all his life",
+    "blanked_sentence": "they look as though he had been ______ all his life",
+    "actual": "drumming a piano"
 }
