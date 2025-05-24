@@ -1,5 +1,5 @@
 {
-    "original_sentence": "MacDougall tapped his forehead suspiciously with a stubby forefinger",
-    "blanked_sentence": "______ forehead suspiciously with a stubby forefinger",
-    "actual": "macdougall tapped his"
+    "original_sentence": "The date was nearly eighteen years old",
+    "blanked_sentence": "the date was ______ years old",
+    "actual": "nearly eighteen"
 }

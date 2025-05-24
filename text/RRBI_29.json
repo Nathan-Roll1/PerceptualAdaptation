@@ -1,5 +1,5 @@
 {
-    "original_sentence": "At first he puzzled over something untoward he was sure had happened",
-    "blanked_sentence": "at first he puzzled ______ he was sure had happened",
-    "actual": "over something untoward"
+    "original_sentence": "He was the soul of devotion to his employers",
+    "blanked_sentence": "he was the soul of devotion to his ______",
+    "actual": "employers"
 }

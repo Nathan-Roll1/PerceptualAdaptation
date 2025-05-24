@@ -1,5 +1,5 @@
 {
-    "original_sentence": "To my surprise he began to show actual enthusiasm in my favor",
-    "blanked_sentence": "to my surprise he began to ______ in my favor",
-    "actual": "show actual enthusiasm"
+    "original_sentence": "His immaculate appearance was gone",
+    "blanked_sentence": "his ______ appearance was gone",
+    "actual": "immaculate"
 }

@@ -1,5 +1,5 @@
 {
-    "original_sentence": "The emotion which she had suppressed burst forth now in a choking sob",
-    "blanked_sentence": "the emotion which she had suppressed burst forth now in ______",
-    "actual": "a choking sob"
+    "original_sentence": "Much replied Jeanne as tersely",
+    "blanked_sentence": "much replied ______",
+    "actual": "jeanne as tersely"
 }

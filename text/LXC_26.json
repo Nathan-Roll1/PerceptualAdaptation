@@ -1,5 +1,5 @@
 {
-    "original_sentence": "It drowned all sound that brute agony and death may have made",
-    "blanked_sentence": "it drowned all sound ______ and death may have made",
-    "actual": "that brute agony"
+    "original_sentence": "Its diameter was not more than two hundred yards",
+    "blanked_sentence": "its diameter was not more than ______",
+    "actual": "two hundred yards"
 }

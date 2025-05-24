@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Oppressive as the heat had been it was now even more oppressive",
-    "blanked_sentence": "oppressive as the ______ it was now even more oppressive",
-    "actual": "heat had been"
+    "original_sentence": "The last one I knew was an overseer",
+    "blanked_sentence": "the last one i ______ an overseer",
+    "actual": "knew was"
 }

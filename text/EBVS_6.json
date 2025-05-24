@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Close beside him gleamed the white fangs of the wolf dog",
-    "blanked_sentence": "close beside him gleamed ______ of the wolf dog",
-    "actual": "the white fangs"
+    "original_sentence": "Yes it was a man who asked a stranger",
+    "blanked_sentence": "yes it was ______ man who asked a stranger",
+    "actual": "a"
 }

@@ -1,5 +1,5 @@
 {
-    "original_sentence": "He was a head shorter than his companion of almost delicate physique",
-    "blanked_sentence": "he was a head shorter than his companion of almost delicate ______",
-    "actual": "physique"
+    "original_sentence": "It fairly clubbed me into recognizing it",
+    "blanked_sentence": "it fairly clubbed me ______ it",
+    "actual": "into recognizing"
 }

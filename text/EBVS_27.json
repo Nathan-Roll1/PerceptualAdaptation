@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Fresh cases still able to walk they clustered about the spokesman",
-    "blanked_sentence": "fresh cases still able to ______ about the spokesman",
-    "actual": "walk they clustered"
+    "original_sentence": "It was the same way with our revolvers and rifles",
+    "blanked_sentence": "it was the same way with our revolvers ______",
+    "actual": "and rifles"
 }

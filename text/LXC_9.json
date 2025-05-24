@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Scarcely had he uttered the name when Pierre's closing eyes shot open",
-    "blanked_sentence": "scarcely had he uttered the name when pierre's closing ______",
-    "actual": "eyes shot open"
+    "original_sentence": "What was the object of your little sensation",
+    "blanked_sentence": "what was the object of your ______",
+    "actual": "little sensation"
 }

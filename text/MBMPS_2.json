@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Hardly were our plans made public before we were met by powerful opposition",
-    "blanked_sentence": "______ plans made public before we were met by powerful opposition",
-    "actual": "hardly were our"
+    "original_sentence": "They were three hundred yards apart",
+    "blanked_sentence": "they were ______ yards apart",
+    "actual": "three hundred"
 }

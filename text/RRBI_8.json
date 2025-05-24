@@ -1,5 +1,5 @@
 {
-    "original_sentence": "The promoter's eyes were heavy with little puffy bags under them",
-    "blanked_sentence": "the ______ heavy with little puffy bags under them",
-    "actual": "promoter's eyes were"
+    "original_sentence": "Surely I will excuse you she cried",
+    "blanked_sentence": "surely i will excuse you ______",
+    "actual": "she cried"
 }

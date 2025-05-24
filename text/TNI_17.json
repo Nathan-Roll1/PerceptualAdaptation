@@ -1,5 +1,5 @@
 {
-    "original_sentence": "He was determined now to maintain a more certain hold upon himself",
-    "blanked_sentence": "he was determined ______ a more certain hold upon himself",
-    "actual": "now to maintain"
+    "original_sentence": "She had died from cold and starvation",
+    "blanked_sentence": "she had died ______ cold and starvation",
+    "actual": "from"
 }

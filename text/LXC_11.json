@@ -1,5 +1,5 @@
 {
-    "original_sentence": "He went down in midstream searching the shadows of both shores",
-    "blanked_sentence": "he went down ______ the shadows of both shores",
-    "actual": "in midstream searching"
+    "original_sentence": "Death had come with terrible suddenness",
+    "blanked_sentence": "death had come with terrible ______",
+    "actual": "suddenness"
 }

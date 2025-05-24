@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Only it is so wonderful so almost impossible to believe",
-    "blanked_sentence": "only ______ wonderful so almost impossible to believe",
-    "actual": "it is so"
+    "original_sentence": "If you only could know how I thank you",
+    "blanked_sentence": "if you only ______ know how i thank you",
+    "actual": "could"
 }

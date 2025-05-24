@@ -1,5 +1,5 @@
 {
-    "original_sentence": "I followed the line of the proposed railroad looking for chances",
-    "blanked_sentence": "i followed the ______ proposed railroad looking for chances",
-    "actual": "line of the"
+    "original_sentence": "Robbery bribery fraud",
+    "blanked_sentence": "robbery bribery ______",
+    "actual": "fraud"
 }

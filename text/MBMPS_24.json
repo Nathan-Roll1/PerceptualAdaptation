@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Like a flash he launched himself into the feathered mass of the owl",
-    "blanked_sentence": "like a flash he launched himself into ______ of the owl",
-    "actual": "the feathered mass"
+    "original_sentence": "He cried and swung the club wildly",
+    "blanked_sentence": "he cried and swung the club ______",
+    "actual": "wildly"
 }

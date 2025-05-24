@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Then you can arrange yourself comfortably among these robes in the bow",
-    "blanked_sentence": "then you can arrange yourself comfortably among these robes ______",
-    "actual": "in the bow"
+    "original_sentence": "You you would not keep the truth from me",
+    "blanked_sentence": "you you would not keep the truth ______ me",
+    "actual": "from"
 }
