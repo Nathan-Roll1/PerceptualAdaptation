@@ -17,11 +17,13 @@ Between-subjects design with 6 conditions manipulating speaker configuration dur
 
 ## Materials
 - 30 sentences from 15 L2 English speakers (6 L1 backgrounds: Arabic, Mandarin, Hindi, Korean, Spanish, Vietnamese)
-- 2 attention check sentences
-- Sentences presented with missing content (blank) that participants must identify
+- 2 attention check sentences (requiring single-word responses)
+- Sentences presented as audio only; participants transcribe the full sentence they hear
+
+## Task
+Participants listen to sentences and type exactly what they hear. They can begin typing while the audio plays but cannot submit their response until the audio finishes. They have 15 seconds after audio completion to finish typing. All responses are automatically formatted to lowercase without punctuation (except apostrophes) to reduce orthographic variability and focus on speech perception accuracy.
 
 ## Primary Hypotheses
-
 ### H1: Talker-Specific Adaptation
 Training with a single talker will show strongest improvement when tested with the same talker (Condition 1 > Conditions 2, 3).
 
@@ -32,23 +34,26 @@ Single-talker training may transfer to new talkers from the same L1 background (
 We test whether costs of specialization equal benefits: |Condition 3 - baseline| = |Condition 4 - baseline|. That is, does single-talker training hurt multi-talker test performance as much as multi-talker training helps single-talker test performance?
 
 ## Secondary Analyses
+### S1: Word-Level Error Patterns
+We will analyze which types of words are most commonly misperceived in accented speech (e.g., function words vs. content words, word frequency effects, phonological neighborhood density). We hypothesize that function words and high-frequency words will show higher accuracy due to top-down support, while words with many phonological neighbors will show lower accuracy.
 
-### S1: Blank Position Effects
-We will analyze how accuracy varies based on where the blank appears in the sentence (beginning, middle, end). We hypothesize that later blanks will show lower accuracy due to increased memory demands, with this effect being stronger for less intelligible speakers.
+### S2: Serial Position Effects
+We will examine whether word accuracy follows a U-shaped pattern across sentence positions, with higher accuracy for initial and final words compared to middle words. We hypothesize that primacy and recency effects will be present, but may be modulated by speaker intelligibility—less intelligible speakers may show stronger recency effects as listeners rely more heavily on recently heard information when processing is difficult.
 
-### S2: Human-ASR Alignment
+### S3: Human-ASR Alignment
 We will compare human error patterns with automatic speech recognition (ASR) model predictions. Specifically, we will correlate item-level accuracy between humans and ASR confidence scores to test whether computational models capture the same sources of difficulty in accented speech perception.
 
 ## Analysis Plan
-
 ### Primary Analyses
 - Mixed-effects logistic regression: Accuracy ~ Condition × Phase + (1|Participant) + (1|Item)
 - Planned contrasts testing H1-H3 using Bonferroni correction
 - Effect sizes calculated as Cohen's d on log-odds transformed accuracy
+- Accuracy calculated using normalized string matching (lowercase, no punctuation except apostrophes)
 
 ### Secondary Analyses  
-- S1: Accuracy ~ Blank_Position × Speaker_Intelligibility + (1|Participant) + (1|Item)
-- S2: Pearson correlation between item-level human accuracy and ASR confidence scores
+- S1: Word-level accuracy ~ Word_Type × Word_Frequency × Neighborhood_Density + (1|Participant) + (1|Item)
+- S2: Word accuracy ~ Serial_Position (beginning/middle/end) × Speaker_Intelligibility + (1|Participant) + (1|Item)
+- S3: Pearson correlation between item-level human accuracy and ASR confidence scores
 
 ### Power Analysis
 With 200 participants per condition after exclusions, we have 85% power to detect d = 0.27 (approximately 4% accuracy difference) between conditions.
@@ -59,5 +64,6 @@ Data collection will proceed until we reach 200 valid participants per condition
 ## Predictions
 1. Adaptation will be strongest for talker-specific conditions
 2. Some single-talker conditions will show cross-talker generalization
-3. Blank position will interact with speaker intelligibility, with end-position blanks showing steeper accuracy declines for harder-to-understand speakers
-4. Human and ASR difficulty patterns will be moderately correlated (r = 0.4-0.6)
+3. Function words and high-frequency words will show higher accuracy across all conditions
+4. Word accuracy will show a U-shaped pattern across sentence positions, with beginning and end words showing higher accuracy than middle words
+5. Human and ASR difficulty patterns will be moderately correlated (r = 0.4-0.6)
