@@ -1,5 +1,5 @@
 {
-    "original_sentence": "What was the object of your little sensation",
-    "blanked_sentence": "what was the object ______ sensation",
-    "actual": "of your little"
+    "original_sentence": "The gray eyes faltered the flush deepened",
+    "blanked_sentence": "the ______ eyes faltered the flush deepened",
+    "actual": "gray"
 }

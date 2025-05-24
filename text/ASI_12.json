@@ -1,5 +1,5 @@
 {
-    "original_sentence": "The night glow was treacherous to shoot by",
-    "blanked_sentence": "the ______ was treacherous to shoot by",
-    "actual": "night glow"
+    "original_sentence": "You you would not keep the truth from me",
+    "blanked_sentence": "you ______ not keep the truth from me",
+    "actual": "you would"
 }

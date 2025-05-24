@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Its diameter was not more than two hundred yards",
-    "blanked_sentence": "its diameter was not more than ______",
-    "actual": "two hundred yards"
+    "original_sentence": "What part of the United States is your home",
+    "blanked_sentence": "what part of the ______ your home",
+    "actual": "united states is"
 }

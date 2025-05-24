@@ -1,5 +1,5 @@
 {
     "original_sentence": "He was the soul of devotion to his employers",
-    "blanked_sentence": "he was the ______ of devotion to his employers",
-    "actual": "soul"
+    "blanked_sentence": "he was ______ of devotion to his employers",
+    "actual": "the soul"
 }

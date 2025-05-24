@@ -1,5 +1,5 @@
 {
-    "original_sentence": "It was not a large lake and almost round",
-    "blanked_sentence": "it was ______ a large lake and almost round",
-    "actual": "not"
+    "original_sentence": "Its diameter was not more than two hundred yards",
+    "blanked_sentence": "its diameter was not more than ______ yards",
+    "actual": "two hundred"
 }

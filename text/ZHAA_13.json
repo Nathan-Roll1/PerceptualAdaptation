@@ -1,5 +1,5 @@
 {
-    "original_sentence": "You you would not keep the truth from me",
-    "blanked_sentence": "you you would not keep the truth ______ me",
-    "actual": "from"
+    "original_sentence": "If you only could know how I thank you",
+    "blanked_sentence": "if ______ only could know how i thank you",
+    "actual": "you"
 }

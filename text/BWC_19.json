@@ -1,5 +1,5 @@
 {
-    "original_sentence": "They are to attack your camp tomorrow night",
-    "blanked_sentence": "they are to attack your camp ______",
-    "actual": "tomorrow night"
+    "original_sentence": "The date was nearly eighteen years old",
+    "blanked_sentence": "the date was nearly ______",
+    "actual": "eighteen years old"
 }

@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Much replied Jeanne as tersely",
-    "blanked_sentence": "much replied jeanne as ______",
-    "actual": "tersely"
+    "original_sentence": "She had died from cold and starvation",
+    "blanked_sentence": "she had died from cold ______",
+    "actual": "and starvation"
 }

@@ -1,5 +1,5 @@
 {
-    "original_sentence": "There was none of the joy of meeting in his face",
-    "blanked_sentence": "there was none of the joy of meeting in ______",
-    "actual": "his face"
+    "original_sentence": "If not let's say our prayers and go to bed",
+    "blanked_sentence": "if ______ let's say our prayers and go to bed",
+    "actual": "not"
 }

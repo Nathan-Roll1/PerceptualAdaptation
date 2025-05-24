@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Suddenly Jeanne stopped for an instant",
-    "blanked_sentence": "suddenly jeanne stopped for ______",
-    "actual": "an instant"
+    "original_sentence": "She had been thoroughly and efficiently mauled",
+    "blanked_sentence": "she had been thoroughly and ______",
+    "actual": "efficiently mauled"
 }

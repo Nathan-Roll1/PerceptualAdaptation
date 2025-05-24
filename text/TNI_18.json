@@ -1,5 +1,5 @@
 {
-    "original_sentence": "It was a temptation but he resisted it",
-    "blanked_sentence": "it was a temptation but he ______",
-    "actual": "resisted it"
+    "original_sentence": "There was none of the joy of meeting in his face",
+    "blanked_sentence": "there was none of ______ joy of meeting in his face",
+    "actual": "the"
 }

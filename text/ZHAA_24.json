@@ -1,5 +1,5 @@
 {
-    "original_sentence": "He cried and swung the club wildly",
-    "blanked_sentence": "he cried and swung the club ______",
-    "actual": "wildly"
+    "original_sentence": "It was not a large lake and almost round",
+    "blanked_sentence": "it was not a large lake and almost ______",
+    "actual": "round"
 }

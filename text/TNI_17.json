@@ -1,5 +1,5 @@
 {
-    "original_sentence": "She had died from cold and starvation",
-    "blanked_sentence": "she had died ______ cold and starvation",
-    "actual": "from"
+    "original_sentence": "They are to attack your camp tomorrow night",
+    "blanked_sentence": "they are to attack your camp ______",
+    "actual": "tomorrow night"
 }

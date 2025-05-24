@@ -1,5 +1,5 @@
 {
     "original_sentence": "Yes it was a man who asked a stranger",
-    "blanked_sentence": "yes ______ was a man who asked a stranger",
-    "actual": "it"
+    "blanked_sentence": "yes it was a man ______ asked a stranger",
+    "actual": "who"
 }

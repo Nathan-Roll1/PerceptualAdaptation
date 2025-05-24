@@ -1,5 +1,5 @@
 {
     "original_sentence": "It fairly clubbed me into recognizing it",
-    "blanked_sentence": "it ______ me into recognizing it",
-    "actual": "fairly clubbed"
+    "blanked_sentence": "it fairly ______ me into recognizing it",
+    "actual": "clubbed"
 }

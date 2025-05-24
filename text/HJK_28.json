@@ -1,5 +1,5 @@
 {
     "original_sentence": "The last one I knew was an overseer",
-    "blanked_sentence": "the last one i knew was ______",
-    "actual": "an overseer"
+    "blanked_sentence": "the last ______ knew was an overseer",
+    "actual": "one i"
 }

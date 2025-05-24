@@ -1,5 +1,5 @@
 {
     "original_sentence": "They were three hundred yards apart",
-    "blanked_sentence": "they were ______ apart",
-    "actual": "three hundred yards"
+    "blanked_sentence": "they were ______ yards apart",
+    "actual": "three hundred"
 }

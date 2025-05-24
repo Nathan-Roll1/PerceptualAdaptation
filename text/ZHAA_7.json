@@ -1,5 +1,5 @@
 {
-    "original_sentence": "He saw Jeanne falter for a moment",
-    "blanked_sentence": "he ______ for a moment",
-    "actual": "saw jeanne falter"
+    "original_sentence": "Surely I will excuse you she cried",
+    "blanked_sentence": "surely i will excuse you ______",
+    "actual": "she cried"
 }

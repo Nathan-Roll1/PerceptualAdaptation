@@ -1,5 +1,5 @@
 {
-    "original_sentence": "Two years ago I gave up civilization for this",
-    "blanked_sentence": "two years ago i gave up civilization for ______",
-    "actual": "this"
+    "original_sentence": "It was a temptation but he resisted it",
+    "blanked_sentence": "it was a temptation but he ______",
+    "actual": "resisted it"
 }

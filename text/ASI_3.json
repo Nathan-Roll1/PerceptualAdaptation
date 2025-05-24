@@ -1,5 +1,5 @@
 {
     "original_sentence": "I was the only one who remained sitting",
-    "blanked_sentence": "i was the only one who ______ sitting",
-    "actual": "remained"
+    "blanked_sentence": "i was the only one who ______",
+    "actual": "remained sitting"
 }
