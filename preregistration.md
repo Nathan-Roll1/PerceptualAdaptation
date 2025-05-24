@@ -16,9 +16,10 @@ Between-subjects design with 6 conditions manipulating speaker configuration dur
 1,380 native English speakers (230 per condition) recruited via Prolific from US, UK, and Canada, aged 18-35. Exclusion criteria: failing 2+ attention checks or timeouts, self-reported hearing issues, or not using headphones.
 
 ## Materials
-- 30 sentences from 15 L2 English speakers (6 L1 backgrounds: Arabic, Mandarin, Hindi, Korean, Spanish, Vietnamese)
+- 30 sentences from 15 L2 English speakers (6 L1 backgrounds: Arabic, Mandarin, Hindi, Korean, Spanish, Vietnamese; balanced by speaker gender)
 - 2 attention check sentences (requiring single-word responses)
 - Sentences presented as audio only; participants transcribe the full sentence they hear
+- Exit survey collecting: listener gender, first language, other language exposure, English learning history
 
 ## Task
 Participants listen to sentences and type exactly what they hear. They can begin typing while the audio plays but cannot submit their response until the audio finishes. They have 15 seconds after audio completion to finish typing. All responses are automatically formatted to lowercase without punctuation (except apostrophes) to reduce orthographic variability and focus on speech perception accuracy.
@@ -43,6 +44,12 @@ We will examine whether word accuracy follows a U-shaped pattern across sentence
 ### S3: Human-ASR Alignment
 We will compare human error patterns with automatic speech recognition (ASR) model predictions. Specifically, we will correlate item-level accuracy between humans and ASR confidence scores to test whether computational models capture the same sources of difficulty in accented speech perception.
 
+### S4: Gender Matching Effects
+We will test whether listener-talker gender matching affects speech perception accuracy. Previous research suggests mixed effects of gender matching in accented speech perception. We will examine whether same-gender pairings show higher accuracy than different-gender pairings, potentially due to acoustic-phonetic similarities or social factors.
+
+### S5: Cross-Linguistic Facilitation
+We will investigate whether listeners who report regular exposure to languages other than English show improved accuracy when listening to speakers whose L1 matches those languages. For example, do listeners with Spanish exposure better understand Spanish-accented English? This tests whether multilingual experience provides specific perceptual advantages for processing accent patterns from familiar language backgrounds.
+
 ## Analysis Plan
 ### Primary Analyses
 - Mixed-effects logistic regression: Accuracy ~ Condition × Phase + (1|Participant) + (1|Item)
@@ -54,6 +61,8 @@ We will compare human error patterns with automatic speech recognition (ASR) mod
 - S1: Word-level accuracy ~ Word_Type × Word_Frequency × Neighborhood_Density + (1|Participant) + (1|Item)
 - S2: Word accuracy ~ Serial_Position (beginning/middle/end) × Speaker_Intelligibility + (1|Participant) + (1|Item)
 - S3: Pearson correlation between item-level human accuracy and ASR confidence scores
+- S4: Accuracy ~ Listener_Gender × Talker_Gender + (1|Participant) + (1|Item)
+- S5: Accuracy ~ Listener_L2_Match (matches/doesn't match talker L1) × Talker_L1 + (1|Participant) + (1|Item)
 
 ### Power Analysis
 With 200 participants per condition after exclusions, we have 85% power to detect d = 0.27 (approximately 4% accuracy difference) between conditions.
@@ -67,3 +76,5 @@ Data collection will proceed until we reach 200 valid participants per condition
 3. Function words and high-frequency words will show higher accuracy across all conditions
 4. Word accuracy will show a U-shaped pattern across sentence positions, with beginning and end words showing higher accuracy than middle words
 5. Human and ASR difficulty patterns will be moderately correlated (r = 0.4-0.6)
+6. Gender matching effects, if present, will be small (d < 0.2) and may interact with talker L1 background
+7. Listeners with L2 experience will show 3-5% accuracy improvement when the L2 matches the talker's L1, suggesting transfer of accent-specific perceptual knowledge
