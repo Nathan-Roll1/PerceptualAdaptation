@@ -75,7 +75,6 @@ This is a "partial" replication focusing on the training phase effects:
 
 If you use this data or code, please cite:
 
-```bibtex
 Original study:
 ```bibtex
 @article{bradlow2023generalized,
