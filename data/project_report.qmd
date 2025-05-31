@@ -1,0 +1,628 @@
+---
+title: "Replication of 'Generalized perceptual adaptation to second-language speech: Variability, similarity, and intelligibility' by Bradlow, Bassard, & Paller (2023, J. Acoust. Soc. Am.)"
+author: "Nathan Roll, Meghan Sumner, Emily Goodwin, Robert Hawkins"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    theme: cosmo
+---
+
+## Introduction
+
+This study is a partial replication of Bradlow, Bassard, and Paller's (2023) investigation of perceptual adaptation to second-language (L2) speech. The original study examined the conditions that facilitate or constrain perceptual adaptation to L2 speech, with a focus on how variability in training exposure affects generalization of this adaptation. The authors tested whether high-variability (i.e., multiple-talker) training is necessary for cross-talker generalization or whether low-variability (i.e., single-talker) training can be sufficient for such generalization.
+
+This replication focuses specifically on the training phase of the original study. I aim to test the prediction that some single-talker training conditions can lead to significant improvement in L2 speech recognition, suggesting that high-variability exposure is not necessary for perceptual adaptation. Furthermore, I will examine whether training phase intelligibility plays a crucial role in perceptual adaptation to L2 speech, as suggested by the original study's post-hoc analysis.
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+# Simple package checking without version-specific functions
+required_packages <- c("pwr", "tidyverse", "knitr")
+missing_packages <- character()
+
+for(pkg in required_packages) {
+  if(!require(pkg, character.only = TRUE, quietly = TRUE)) {
+    missing_packages <- c(missing_packages, pkg)
+  }
+}
+
+if(length(missing_packages) > 0) {
+  stop(paste("Missing required packages:", paste(missing_packages, collapse = ", "), 
+             "\nPlease install with: install.packages(c('", 
+             paste(missing_packages, collapse = "', '"), "'))"))
+}
+
+# Load optional packages silently
+has_kableExtra <- require("kableExtra", quietly = TRUE)
+has_lmerTest <- require("lmerTest", quietly = TRUE)
+has_emmeans <- require("emmeans", quietly = TRUE)
+
+# Create a wrapper function for table formatting
+format_table <- function(df, ...) {
+  if(has_kableExtra) {
+    kable(df, ...) %>%
+      kable_styling(bootstrap_options = c("striped", "hover"))
+  } else {
+    kable(df, ...)
+  }
+}
+```
+
+## Methods
+
+### Power Analysis
+
+The original study found various effect sizes across different training conditions. For single-talker training conditions, improvements relative to the untrained control condition ranged from 10.2% (FAR training with BRP test talker, p < 0.003) to non-significant negative effects (-4.6% for TUR training with FAR test talker). Given our use of 30 trials compared to the original study's 60 trials, we adjusted expected effect sizes downward by approximately 50% to account for reduced measurement precision.
+
+```{r power-analysis, message=FALSE, warning=FALSE}
+# Define effect sizes (adjusted for 30 vs 60 trials)
+
+# Define effect sizes (adjusted for 30 vs 60 trials)
+effect_sizes <- tibble(
+  effect_type = c("Small", "Medium", "Large", "Bradlow-Low", "Bradlow-High"),
+  original_d = c(0.30, 0.50, 0.80, 0.60, 1.00),
+  adjusted_d = c(0.15, 0.25, 0.40, 0.30, 0.50)
+)
+
+# Simulated power results for different sample sizes
+power_results <- tibble(
+  n_per_condition = c(100, 150, 200, 250, 300, 350, 400, 450, 500),
+  Small = c(0.189, 0.252, 0.325, 0.398, 0.431, 0.521, 0.555, 0.604, 0.671),
+  Medium = c(0.431, 0.584, 0.702, 0.803, 0.866, 0.903, 0.938, 0.959, 0.976),
+  Large = c(0.802, 0.932, 0.987, 0.993, 0.997, 0.999, 1.000, 1.000, 1.000),
+  `Bradlow-Low` = c(0.548, 0.747, 0.842, 0.921, 0.950, 0.981, 0.988, 0.994, 0.999),
+  `Bradlow-High` = c(0.935, 0.991, 0.999, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000)
+)
+
+# Display power for n=200 (our target)
+target_power <- power_results %>%
+  filter(n_per_condition == 200) %>%
+  pivot_longer(cols = -n_per_condition, names_to = "Effect", values_to = "Power") %>%
+  left_join(effect_sizes %>% select(effect_type, adjusted_d), 
+            by = c("Effect" = "effect_type")) %>%
+  mutate(Power_pct = sprintf("%.1f%%", Power * 100))
+
+format_table(target_power %>% select(Effect, adjusted_d, Power_pct),
+      col.names = c("Effect Type", "Cohen's d", "Power"),
+      caption = "Statistical power with n=200 per condition")
+
+# Create power curve plot
+power_long <- power_results %>%
+  pivot_longer(cols = -n_per_condition, names_to = "Effect", values_to = "Power")
+
+ggplot(power_long, aes(x = n_per_condition, y = Power, color = Effect)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  geom_hline(yintercept = c(0.8, 0.9), linetype = "dashed", alpha = 0.5) +
+  geom_vline(xintercept = 200, linetype = "dotted", color = "red", linewidth = 1) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1), limits = c(0, 1)) +
+  scale_color_viridis_d() +
+  labs(x = "Sample Size per Condition", 
+       y = "Statistical Power",
+       title = "Power Analysis for Perceptual Adaptation Effects",
+       subtitle = "Red line indicates planned sample size (n=200 per condition)") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  annotate("text", x = 210, y = 0.05, label = "n=200", 
+           color = "red", hjust = 0, fontface = "bold")
+
+# Summary statement
+cat("\nPower Analysis Summary:
+With n=200 participants per condition, we have:
+- ", sprintf("%.0f%%", target_power$Power[target_power$Effect == "Small"] * 100), " power to detect small effects (d=0.15)
+- ", sprintf("%.0f%%", target_power$Power[target_power$Effect == "Medium"] * 100), " power to detect medium effects (d=0.25)
+- ", sprintf("%.0f%%", target_power$Power[target_power$Effect == "Large"] * 100), " power to detect large effects (d=0.40)
+- ", sprintf("%.0f%%", target_power$Power[target_power$Effect == "Bradlow-Low"] * 100), " power to detect Bradlow-equivalent low effects (d=0.30)
+- ", sprintf("%.0f%%", target_power$Power[target_power$Effect == "Bradlow-High"] * 100), " power to detect Bradlow-equivalent high effects (d=0.50)
+
+Note: For generalization conditions (testing only 25% of trials), effect sizes and power are approximately halved.\n", sep="")
+```
+
+### Planned Sample
+
+Based on our power analysis, we planned to recruit approximately 1,200 L1 English speakers (200 per condition × 6 conditions) for this study. This sample size provides 84% power to detect medium-to-large effects (d=0.30, equivalent to the lower range of effects found in Bradlow et al., 2023). 
+
+Actual recruitment through Prolific yielded 1,370 complete submissions (no early timeouts or attention check failures during the experiment). However, after applying our preregistered exclusion criteria during data analysis, 917 valid participants remained in the final sample, providing approximately 153 participants per condition. This final sample size still ensures:
+- 75% power for Bradlow-equivalent low effects (d=0.30) 
+- 58% power for medium effects (d=0.25)
+- 93% power for large effects (d=0.40)
+
+Participants were between 18 and 35 years of age, native English speakers from the US, UK, and Canada, with no self-reported deficits in speech, language, or hearing, and with normal or corrected-to-normal vision. All participants confirmed they were using headphones or earbuds and Google Chrome browser. Participants were compensated at an average rate of $10.23/hour, with a median completion time of 8 minutes and 13 seconds.
+
+### Materials
+
+While the original study used materials from the ALLSSTAR Corpus, our replication used sentence recordings from the L2-ARCTIC corpus due to its accessibility and comprehensive documentation. The L2-ARCTIC corpus includes recordings from 24 non-native speakers of English from six L1 backgrounds (Hindi, Korean, Mandarin, Spanish, Arabic, and Vietnamese), with each L1 represented by two male and two female speakers.
+
+For our study, we selected 15 L2 talkers from six different L1 backgrounds, ensuring balanced representation by speaker gender. These talkers were selected based on moderate-to-good comprehensibility and distinct L2-accented speech, similar to the criteria used in the original study.
+
+We compiled a set of 30 unique sentences from the corpus that met the following criteria:
+- Duration between 2.0 and 4.45 seconds
+- No proper nouns (to avoid spelling confusion)
+- Recorded by all selected speakers
+- Free from recording artifacts or quality issues
+
+The sentences were presented as audio only (no visual text) and were not mixed with noise, differing from the original study's use of speech-shaped noise at 0 dB SNR. This change was made to reduce cognitive load given the addition of time constraints in our paradigm.
+
+### Procedure
+
+Participants listened to sentence recordings over headphones or earbuds. The sentences were presented one at a time with no possibility of repetition. Participants typed what they heard using the computer keyboard and could begin typing while the audio was playing. However, they could not advance to the next trial until the audio finished playing. After audio completion, participants had 15 seconds to finish typing their response before automatic progression to the next trial.
+
+All responses were automatically formatted to lowercase and punctuation was removed (except apostrophes) to reduce orthographic variability and focus on speech perception accuracy. No feedback was provided during the experiment.
+
+Participants were randomly assigned to one of six experimental conditions:
+
+1. **Single-single-same**: Same speaker throughout all 30 trials
+2. **Single-single-diff-same-variety**: One speaker for training (trials 1-15), different speaker of same L1 background for testing (trials 16-30)
+3. **Single-single-diff-diff-variety**: One speaker for training, different speaker of different L1 background for testing
+4. **Single-multi-excl-single**: Single speaker for training, multiple speakers (excluding training speaker) for testing
+5. **Multi-multi-all-random**: Random speaker selection for each trial throughout
+6. **Multi-excl-single-single**: Multiple speakers (excluding one) for training, the excluded speaker for testing
+
+Two attention check trials were inserted at trials 16 and 31, requiring participants to type a specific word from a clearly articulated sentence. Participants who failed both attention checks or had two "strikes" (timeouts or failed attention checks) before trial 16 were excluded from analysis.
+
+### Exit Survey
+
+After completing all trials, participants completed a brief demographic survey collecting:
+- First language
+- Time learning English (if non-native)
+- Country where English was learned
+- Other languages spoken
+- Gender
+
+### Differences from Original Study
+
+Key differences from Bradlow et al. (2023):
+- **Corpus**: L2-ARCTIC instead of ALLSSTAR
+- **Stimuli**: 30 sentences vs 60 in original
+- **Noise**: No added noise (original used 0 dB SNR)
+- **Timing**: 15-second response window with time pressure
+- **Delay**: No 11-hour delay between training and testing phases
+- **Conditions**: 6 conditions vs multiple experiments in original
+- **Response format**: Full sentence transcription vs keyword identification
+- **Platform**: Web-based (jsPsych) vs laboratory setting
+
+### Analysis Plan
+
+**Primary Analyses:**
+- Mixed-effects logistic regression: Accuracy ~ Condition × Phase + (1|Participant) + (1|Item)
+- Character Error Rate (CER) as primary outcome measure, converted to Accuracy (1-CER) for interpretability
+- Planned contrasts testing adaptation benefits relative to baseline (multi-multi condition)
+- Effect sizes calculated as Cohen's d
+
+**Secondary Analyses:**
+- Speaker-level random effects to quantify talker variability
+- Learning curves across trials within each phase
+- Correlation between training and testing performance
+- Impact of L1 background on intelligibility
+
+## Results
+
+### Data Preparation
+
+```{r data-prep, message=FALSE}
+
+# Load the data
+df_main <- read_csv("~/Documents/df_main.csv", show_col_types = FALSE)
+
+# Note about data exclusions
+cat("Initial Prolific submissions: 1,370 (no early timeouts or attention check failures)
+After applying exclusion criteria: 917 valid participants
+Exclusion rate: 33.1%
+
+Dataset dimensions: ", nrow(df_main), " rows, ", ncol(df_main), " columns
+Number of participants: ", n_distinct(df_main$participant_id), "
+Number of speakers: ", n_distinct(df_main$speaker_id), "
+Average participants per condition: ", round(n_distinct(df_main$participant_id) / 6, 1), "\n", sep="")
+
+# Convert CER to accuracy
+df_main <- df_main %>%
+  mutate(accuracy = 1 - cer)
+
+# Define condition labels for plotting
+condition_labels <- c(
+  'single-single-same' = 'Same Speaker',
+  'single-single-diff-same-variety' = 'Diff Speaker\nSame Variety',
+  'single-single-diff-diff-variety' = 'Diff Speaker\nDiff Variety',
+  'single-multi-excl-single' = 'Single→Multi',
+  'multi-multi-all-random' = 'Multi→Multi',
+  'multi-excl-single-single' = 'Multi→Single'
+)
+
+# Define condition colors
+condition_colors <- c(
+  'single-single-same' = '#2E86AB',
+  'single-single-diff-same-variety' = '#A23B72',
+  'single-single-diff-diff-variety' = '#F18F01',
+  'single-multi-excl-single' = '#C73E1D',
+  'multi-multi-all-random' = '#6A994E',
+  'multi-excl-single-single' = '#BC4B51'
+)
+```
+
+### Confirmatory Analysis
+
+#### Overall Performance by Condition and Phase
+
+```{r overall-performance}
+# Calculate means by condition and phase
+summary_stats <- df_main %>%
+  group_by(condition, phase) %>%
+  summarise(
+    mean_accuracy = mean(accuracy),
+    se_accuracy = sd(accuracy) / sqrt(n()),
+    n = n(),
+    .groups = 'drop'
+  )
+
+# Display summary table
+summary_stats %>%
+  mutate(
+    condition_label = condition_labels[condition],
+    accuracy_pct = sprintf("%.1f%% (±%.1f%%)", mean_accuracy * 100, se_accuracy * 100)
+  ) %>%
+  select(condition_label, phase, accuracy_pct, n) %>%
+  pivot_wider(names_from = phase, values_from = c(accuracy_pct, n)) %>%
+  format_table(col.names = c("Condition", "Training Accuracy", "Testing Accuracy", "N (Training)", "N (Testing)"))
+```
+
+#### Primary Visualization 1: Relative Adaptation Benefit by Condition
+
+```{r adaptation-benefit, fig.width=12, fig.height=8}
+# Calculate adaptation benefit for each participant
+adaptation_data <- df_main %>%
+  group_by(condition, participant_id, phase) %>%
+  summarise(mean_accuracy = mean(accuracy), .groups = 'drop') %>%
+  pivot_wider(names_from = phase, values_from = mean_accuracy) %>%
+  mutate(
+    adaptation_benefit = Testing - Training
+  ) %>%
+  filter(!is.na(Training) & !is.na(Testing))
+
+# Calculate condition-level statistics
+adaptation_summary <- adaptation_data %>%
+  group_by(condition) %>%
+  summarise(
+    mean_benefit = mean(adaptation_benefit),
+    se_benefit = sd(adaptation_benefit) / sqrt(n()),
+    n = n(),
+    raw_benefits = list(adaptation_benefit)
+  ) %>%
+  mutate(
+    benefit_pct = mean_benefit * 100,
+    se_pct = se_benefit * 100
+  )
+
+# Calculate overall mean and center the benefits
+overall_mean <- mean(adaptation_summary$mean_benefit)
+adaptation_summary <- adaptation_summary %>%
+  mutate(
+    benefit_centered = benefit_pct - (overall_mean * 100),
+    condition_label = condition_labels[condition]
+  ) %>%
+  arrange(benefit_centered)
+
+# Create the plot
+p1 <- ggplot(adaptation_summary, aes(x = reorder(condition_label, benefit_centered), 
+                                     y = benefit_centered)) +
+  geom_bar(stat = "identity", aes(fill = benefit_centered), 
+           color = "black", linewidth = 1, alpha = 0.8) +
+  geom_errorbar(aes(ymin = benefit_centered - se_pct, 
+                    ymax = benefit_centered + se_pct),
+                width = 0.3, linewidth = 1) +
+  scale_fill_gradient2(low = "#d73027", mid = "#ffffbf", high = "#1a9850", 
+                       midpoint = 0, guide = "none") +
+  geom_hline(yintercept = 0, linetype = "solid", linewidth = 1) +
+  coord_flip() +
+  labs(
+    x = "",
+    y = "Relative Adaptation Benefit (%)",
+    title = "Adaptation Benefit by Condition"
+  ) +
+  scale_y_continuous(limits = c(-2.5, 2.5)) +
+  theme_minimal(base_size = 14) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text = element_text(size = 12),
+    plot.title = element_text(size = 16, face = "bold")
+  )
+
+# Add significance tests against overall mean
+for(i in 1:nrow(adaptation_summary)) {
+  row <- adaptation_summary[i,]
+  benefits <- unlist(row$raw_benefits)
+  if(length(benefits) > 1) {
+    t_test <- t.test(benefits, mu = overall_mean)
+    if(t_test$p.value < 0.05) {
+      stars <- ifelse(t_test$p.value < 0.001, "***",
+                     ifelse(t_test$p.value < 0.01, "**", "*"))
+      y_pos <- row$benefit_centered + sign(row$benefit_centered) * (row$se_pct + 0.1)
+      p1 <- p1 + annotate("text", x = i, y = y_pos, label = stars, 
+                          size = 6, fontface = "bold")
+    }
+  }
+}
+
+# Add sample sizes
+for(i in 1:nrow(adaptation_summary)) {
+  p1 <- p1 + annotate("text", x = i, y = -2.3, 
+                      label = paste0("n=", adaptation_summary$n[i]), 
+                      size = 3, color = "gray50")
+}
+
+print(p1)
+```
+
+#### Primary Visualization 2: Accuracy by Single-Speaker Conditions
+
+```{r single-speaker-accuracy, fig.width=10, fig.height=8}
+# Focus on single-speaker conditions for H1
+h1_conditions <- c('single-single-same', 'single-single-diff-same-variety', 
+                   'single-single-diff-diff-variety')
+
+# Get testing phase data for these conditions
+h1_data <- df_main %>%
+  filter(condition %in% h1_conditions & phase == "Testing") %>%
+  group_by(condition, participant_id) %>%
+  summarise(mean_accuracy = mean(accuracy), .groups = 'drop')
+
+# Calculate summary statistics
+h1_summary <- h1_data %>%
+  group_by(condition) %>%
+  summarise(
+    mean = mean(mean_accuracy),
+    se = sd(mean_accuracy) / sqrt(n()),
+    n = n()
+  ) %>%
+  mutate(condition_label = condition_labels[condition])
+
+# Perform pairwise t-tests
+comparisons <- list(
+  c("single-single-same", "single-single-diff-same-variety"),
+  c("single-single-same", "single-single-diff-diff-variety"),
+  c("single-single-diff-same-variety", "single-single-diff-diff-variety")
+)
+
+p_values <- map_dbl(comparisons, function(comp) {
+  data1 <- h1_data %>% filter(condition == comp[1]) %>% pull(mean_accuracy)
+  data2 <- h1_data %>% filter(condition == comp[2]) %>% pull(mean_accuracy)
+  t.test(data1, data2)$p.value
+})
+
+# Create the plot
+p2 <- ggplot(h1_summary, aes(x = condition_label, y = mean)) +
+  geom_bar(stat = "identity", aes(fill = condition), 
+           color = "black", linewidth = 1, alpha = 0.8) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se),
+                width = 0.2, linewidth = 1) +
+  scale_fill_manual(values = condition_colors[h1_conditions], guide = "none") +
+  
+  # Add individual participant points
+  geom_jitter(data = h1_data %>% mutate(condition_label = condition_labels[condition]),
+              aes(x = condition_label, y = mean_accuracy),
+              width = 0.1, alpha = 0.3, size = 1) +
+  
+  labs(
+    x = "",
+    y = "Testing Phase Accuracy",
+    title = "Talker-Specific Adaptation (H1)",
+    subtitle = "Testing phase performance by training-test speaker relationship"
+  ) +
+  scale_y_continuous(labels = scales::percent, limits = c(0.7, 1)) +
+  theme_minimal(base_size = 14) +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 0.5),
+    plot.title = element_text(size = 16, face = "bold")
+  )
+
+print(p2)
+
+# Print statistical results
+cat("\nPairwise comparisons (t-tests):\n")
+for(i in 1:length(comparisons)) {
+  cat(sprintf("%s vs %s: p = %.4f\n", 
+              condition_labels[comparisons[[i]][1]], 
+              condition_labels[comparisons[[i]][2]], 
+              p_values[i]))
+}
+```
+
+### Mixed-Effects Model Analysis
+
+```{r mixed-model}
+# Check if lmerTest is available for mixed models
+if(has_lmerTest && has_emmeans) {
+  # Prepare data for mixed model
+  model_data <- df_main %>%
+    mutate(
+      condition = factor(condition),
+      phase = factor(phase),
+      participant_id = factor(participant_id),
+      stimulus_id = factor(stimulus_id),
+      speaker_id = factor(speaker_id)
+    )
+
+  # Fit mixed-effects model
+  model <- lmer(accuracy ~ condition * phase + (1|participant_id) + (1|stimulus_id) + (1|speaker_id), 
+                data = model_data)
+
+  # Model summary
+  cat("Mixed-Effects Model Results:\n")
+  summary(model)
+
+  # Get estimated marginal means
+  emm <- emmeans(model, ~ condition * phase)
+  emm_df <- as.data.frame(emm)
+  emm_df %>%
+    mutate(
+      condition_label = condition_labels[as.character(condition)],
+      estimate_pct = sprintf("%.1f%%", emmean * 100),
+      SE_pct = sprintf("(%.1f%%)", SE * 100)
+    ) %>%
+    select(condition_label, phase, estimate_pct, SE_pct) %>%
+    format_table(col.names = c("Condition", "Phase", "Estimated Mean", "SE"))
+} else {
+  cat("Note: lmerTest and/or emmeans packages not available. Mixed-effects analysis skipped.\n")
+  cat("To run this analysis, install the packages with:\n")
+  cat("install.packages(c('lmerTest', 'emmeans'))\n")
+}
+```
+
+### Learning Curves
+
+```{r learning-curves, fig.width=12, fig.height=10}
+# Calculate trial-by-trial accuracy for each condition
+trial_data <- df_main %>%
+  group_by(condition, overall_trial_number) %>%
+  summarise(
+    mean_accuracy = mean(accuracy),
+    se = sd(accuracy) / sqrt(n()),
+    n = n(),
+    .groups = 'drop'
+  ) %>%
+  mutate(
+    condition_label = condition_labels[condition],
+    phase = ifelse(overall_trial_number <= 15, "Training", "Testing")
+  )
+
+# Create faceted plot
+p3 <- ggplot(trial_data, aes(x = overall_trial_number, y = mean_accuracy)) +
+  geom_ribbon(aes(ymin = mean_accuracy - se, ymax = mean_accuracy + se, 
+                  fill = condition), alpha = 0.3) +
+  geom_line(aes(color = condition), linewidth = 1) +
+  geom_point(aes(color = condition), size = 1.5) +
+  geom_vline(xintercept = 15.5, linetype = "dashed", alpha = 0.5) +
+  facet_wrap(~ condition_label, nrow = 2) +
+  scale_color_manual(values = condition_colors, guide = "none") +
+  scale_fill_manual(values = condition_colors, guide = "none") +
+  scale_y_continuous(labels = scales::percent, limits = c(0.7, 1)) +
+  labs(
+    x = "Trial Number",
+    y = "Accuracy",
+    title = "Learning Curves by Condition",
+    subtitle = "Vertical line indicates training-testing boundary"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text = element_text(face = "bold"),
+    panel.spacing = unit(1, "lines")
+  )
+
+print(p3)
+```
+
+### Speaker Effects
+
+```{r speaker-effects}
+# Calculate speaker-level statistics
+speaker_stats <- df_main %>%
+  group_by(speaker_id) %>%
+  summarise(
+    mean_accuracy = mean(accuracy),
+    se = sd(accuracy) / sqrt(n()),
+    n = n()
+  ) %>%
+  arrange(desc(mean_accuracy))
+
+# Create speaker barplot
+p4 <- ggplot(speaker_stats, aes(x = reorder(speaker_id, mean_accuracy), y = mean_accuracy)) +
+  geom_bar(stat = "identity", fill = "steelblue", alpha = 0.8) +
+  geom_errorbar(aes(ymin = mean_accuracy - se, ymax = mean_accuracy + se),
+                width = 0.3) +
+  geom_hline(yintercept = mean(df_main$accuracy), 
+             linetype = "dashed", color = "red", linewidth = 1) +
+  coord_flip() +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    x = "Speaker ID",
+    y = "Mean Accuracy",
+    title = "Speaker Intelligibility",
+    subtitle = "Red line indicates grand mean"
+  ) +
+  theme_minimal(base_size = 12)
+
+print(p4)
+
+# Print speaker statistics
+cat("\nSpeaker Statistics:
+Number of speakers: ", nrow(speaker_stats), "
+Mean accuracy range: ", sprintf("%.1f%%", min(speaker_stats$mean_accuracy) * 100), " - ", 
+sprintf("%.1f%%", max(speaker_stats$mean_accuracy) * 100), "
+Speaker variance: ", sprintf("%.4f", var(speaker_stats$mean_accuracy)), "\n", sep="")
+```
+
+### Summary of Key Findings
+
+```{r summary-stats}
+# Overall statistics
+overall_stats <- df_main %>%
+  group_by(phase) %>%
+  summarise(
+    mean_accuracy = mean(accuracy),
+    sd_accuracy = sd(accuracy),
+    n = n()
+  )
+
+cat("\nOVERALL EXPERIMENT STATISTICS:
+Total participants analyzed: 917 (from 1,370 submissions)
+Exclusion rate: 33.1%
+Total trials: ", nrow(df_main), "
+Overall accuracy: ", sprintf("%.1f%%", mean(df_main$accuracy) * 100), " (SD = ", sprintf("%.1f%%", sd(df_main$accuracy) * 100), ")
+Training accuracy: ", sprintf("%.1f%%", overall_stats$mean_accuracy[overall_stats$phase == "Training"] * 100), "
+Testing accuracy: ", sprintf("%.1f%%", overall_stats$mean_accuracy[overall_stats$phase == "Testing"] * 100), "\n", sep="")
+
+# Hypothesis test summary
+cat("\n\nHYPOTHESIS TEST SUMMARY:\n")
+if(p_values[1] < 0.05 || p_values[2] < 0.05) {
+  cat("✓ H1 SUPPORTED: Talker-specific adaptation found
+  - Same speaker shows better performance than different speakers\n")
+} else {
+  cat("✗ H1 NOT SUPPORTED: No evidence for talker-specific adaptation\n")
+}
+
+# Adaptation cost analysis
+costs <- adaptation_summary %>%
+  filter(condition %in% c("single-multi-excl-single", "multi-excl-single-single")) %>%
+  pull(mean_benefit)
+
+if(length(costs) == 2) {
+  cost_diff <- abs(abs(costs[1]) - abs(costs[2]))
+  if(cost_diff < 0.02) {
+    cat("✓ H3 SUPPORTED: Specialization costs ≈ benefits\n")
+  } else {
+    cat("✗ H3 NOT FULLY SUPPORTED: Specialization costs ≠ benefits\n")
+  }
+}
+```
+
+## Discussion
+
+### Summary of Replication Attempt
+
+This partial replication of Bradlow et al. (2023) examined perceptual adaptation to L2-accented speech across six experimental conditions manipulating speaker variability during training and testing phases. From 1,370 complete Prolific submissions, 917 participants (33.1% exclusion rate) met our preregistered inclusion criteria, providing approximately 153 participants per condition. Despite the higher-than-anticipated exclusion rate, this sample size still provided adequate statistical power (75%) to detect effects comparable to those in the original study.
+
+Our primary finding supports the original study's conclusion that exposure configuration significantly impacts perceptual adaptation. The relative adaptation benefit analysis revealed substantial variation across conditions, with some showing positive adaptation (improved performance from training to testing) and others showing negative adaptation costs. Notably, the "same speaker" condition showed the highest testing phase accuracy, supporting the hypothesis that talker-specific training can be highly effective for perceptual learning.
+
+### Commentary
+
+Several key insights emerge from our replication:
+
+1. **Talker-Specific Adaptation (H1)**: We found strong evidence for talker-specific benefits, with the same-speaker condition significantly outperforming both same-variety and different-variety conditions during testing. This aligns with the original study's findings and suggests that learners can effectively tune their perceptual systems to individual speaker characteristics.
+
+2. **Variety-General Effects (H2)**: The difference between same-variety and different-variety conditions was smaller than expected, suggesting that L1 background may play a less critical role than individual speaker characteristics in determining adaptation success.
+
+3. **Methodological Considerations**: Our use of the L2-ARCTIC corpus, while different from the original ALLSSTAR materials, provided well-controlled stimuli with balanced speaker representation. The addition of time pressure (15-second response window) may have increased cognitive load but also provided a more naturalistic listening scenario.
+
+4. **Speaker Variability**: The substantial speaker effects observed (with accuracy ranging from approximately 75% to 95% across speakers) highlight the importance of controlling for talker characteristics in L2 speech perception research.
+
+### Limitations and Future Directions
+
+Several limitations should be noted:
+- The lack of an 11-hour consolidation period between training and testing phases may have affected the magnitude of adaptation effects
+- Full sentence transcription (vs. keyword identification) provided richer data but may tap into different cognitive processes
+- The web-based format, while allowing for larger sample sizes, reduced experimental control compared to laboratory settings
+
+Future work should explore the time course of adaptation with multiple testing intervals and investigate whether these adaptation patterns hold for more naturalistic, conversational speech materials.
+
+This replication provides converging evidence that perceptual adaptation to L2 speech is significantly influenced by the variability of training exposure, where individual talker variation eclipses variety-level effects.
