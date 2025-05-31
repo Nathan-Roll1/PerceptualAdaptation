@@ -1,0 +1,5 @@
+{
+    "original_sentence": "If you only could know how I thank you",
+    "blanked_sentence": "if you only could know how i thank ______",
+    "actual": "you"
+}

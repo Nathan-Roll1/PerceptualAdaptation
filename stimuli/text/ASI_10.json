@@ -1,0 +1,5 @@
+{
+    "original_sentence": "Death had come with terrible suddenness",
+    "blanked_sentence": "death had come with terrible ______",
+    "actual": "suddenness"
+}

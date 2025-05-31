@@ -1,0 +1,5 @@
+{
+    "original_sentence": "It was a temptation but he resisted it",
+    "blanked_sentence": "it was ______ temptation but he resisted it",
+    "actual": "a"
+}

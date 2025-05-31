@@ -1,0 +1,5 @@
+{
+    "original_sentence": "Robbery bribery fraud",
+    "blanked_sentence": "robbery bribery ______",
+    "actual": "fraud"
+}

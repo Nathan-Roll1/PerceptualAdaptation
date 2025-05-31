@@ -1,0 +1,5 @@
+{
+    "original_sentence": "His immaculate appearance was gone",
+    "blanked_sentence": "his ______ appearance was gone",
+    "actual": "immaculate"
+}

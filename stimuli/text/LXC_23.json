@@ -1,0 +1,5 @@
+{
+    "original_sentence": "He cried and swung the club wildly",
+    "blanked_sentence": "he cried and swung ______",
+    "actual": "the club wildly"
+}

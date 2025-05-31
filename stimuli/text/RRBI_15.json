@@ -1,0 +1,5 @@
+{
+    "original_sentence": "She had died from cold and starvation",
+    "blanked_sentence": "she ______ died from cold and starvation",
+    "actual": "had"
+}

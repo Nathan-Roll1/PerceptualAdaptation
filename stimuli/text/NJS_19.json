@@ -1,0 +1,5 @@
+{
+    "original_sentence": "The date was nearly eighteen years old",
+    "blanked_sentence": "the ______ was nearly eighteen years old",
+    "actual": "date"
+}

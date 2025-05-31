@@ -1,0 +1,5 @@
+{
+    "original_sentence": "Two years ago I gave up civilization for this",
+    "blanked_sentence": "two years ago i gave up ______",
+    "actual": "civilization for this"
+}

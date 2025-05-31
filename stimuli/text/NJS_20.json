@@ -1,0 +1,5 @@
+{
+    "original_sentence": "She had been thoroughly and efficiently mauled",
+    "blanked_sentence": "she had been thoroughly and efficiently ______",
+    "actual": "mauled"
+}

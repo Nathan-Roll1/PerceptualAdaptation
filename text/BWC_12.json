@@ -1,5 +1,0 @@
-{
-    "original_sentence": "You you would not keep the truth from me",
-    "blanked_sentence": "you you would not keep ______ truth from me",
-    "actual": "the"
-}

@@ -1,0 +1,5 @@
+{
+    "original_sentence": "What was the object of your little sensation",
+    "blanked_sentence": "what was the object of your little ______",
+    "actual": "sensation"
+}

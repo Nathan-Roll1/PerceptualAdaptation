@@ -1,0 +1,5 @@
+{
+    "original_sentence": "They are to attack your camp tomorrow night",
+    "blanked_sentence": "they are to ______ camp tomorrow night",
+    "actual": "attack your"
+}

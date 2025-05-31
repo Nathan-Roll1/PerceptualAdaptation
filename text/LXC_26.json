@@ -1,5 +1,0 @@
-{
-    "original_sentence": "What part of the United States is your home",
-    "blanked_sentence": "what part of the ______ your home",
-    "actual": "united states is"
-}

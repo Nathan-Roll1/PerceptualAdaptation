@@ -1,0 +1,5 @@
+{
+    "original_sentence": "There was none of the joy of meeting in his face",
+    "blanked_sentence": "there was none of the joy of meeting in ______",
+    "actual": "his face"
+}

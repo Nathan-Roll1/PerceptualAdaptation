@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z4ZQR9SDV4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z4ZQR9SDV4');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Listening Experiment</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Strike warning styles */
+    .strike-warning {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(220, 53, 69, 0.95);
+      color: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      max-width: 400px;
+    }
+    
+    .strike-warning.show {
+      opacity: 1;
+    }
+    
+    .strike-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    
+    .strike-message {
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+    
+    .strike-message strong {
+      font-size: 1.3rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Additional styles for payment code screen */
+    .code-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 2rem 0;
+    }
+    
+    .payment-code {
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 3px;
+      padding: 1rem 2rem;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      border: 2px dashed #dee2e6;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    
+    .copy-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .copy-btn:hover {
+      background-color: #e0e0e0;
+    }
+    
+    .copy-success {
+      font-size: 0.9rem;
+      color: #28a745;
+      margin-top: 0.5rem;
+      visibility: hidden;
+    }
+    
+    .copy-success.visible {
+      visibility: visible;
+    }
+
+    /* Score ring styling */
+    .score-ring {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      font-weight: bold;
+      position: relative;
+      border: 10px solid #28a745;
+      color: #28a745;
+    }
+
+    /* Visually hidden but accessible to screen readers */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    /* Styles for fill-in-the-blank */
+    .blanked-sentence-container {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      text-align: center;
+      background-color: var(--primary-light);
+      border-radius: var(--border-radius);
+      min-height: 50px; /* Ensure space even if empty */
+    }
+
+    .typed-response-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 1.1rem;
+      border: 2px solid var(--gray-light);
+      border-radius: var(--border-radius);
+      box-sizing: border-box; /* Important for width */
+    }
+    .typed-response-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+      outline: none;
+    }
+    
+    /* Hidden condition info */
+    .condition-info {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 10px;
+      color: #f8f9fa; /* Same as page background */
+      user-select: all;
+      z-index: 1; /* Behind the card */
+    }
+    
+    /* Ensure screen container has relative positioning */
+    #instructions-screen {
+      position: relative;
+    }
+    
+    /* Termination screen styling */
+    .termination-icon {
+      font-size: 4rem;
+      color: var(--danger);
+      margin-bottom: 1rem;
+    }
+    
+    .termination-message {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .termination-lead {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--danger);
+    }
+    
+    /* Timer color variable */
+    :root {
+      --timer-color: hsl(220, 80%, 50%);
+    }
+    
+    /* Apply timer color to donut segments */
+    .donut-segment {
+      stroke: var(--timer-color);
+      transition: stroke 0.2s ease;
+    }
+    
+    /* Browser check styling similar to headphone check */
+    .browser-check.compact,
+    .headphone-check.compact {
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid #dee2e6;
+    }
+    
+    .browser-check label,
+    .headphone-check label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    
+    .radio-options {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    .radio-label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      font-weight: normal;
+    }
+    
+    .radio-label input[type="radio"] {
+      margin-right: 0.5rem;
+    }
+    
+    .warning-text {
+      margin-top: 0.5rem;
+      color: #dc3545;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .warning-text.hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="app-content">
+      <!-- Welcome Screen -->
+      <div id="welcome-screen" class="screen-container active">
+        <div class="card w-100">
+          <div class="card-header">
+            <h1>English Listening Experiment</h1>
+            <div class="header-decoration"></div>
+          </div>
+          <div class="card-body">
+            <div class="welcome-image">
+              <i class="fas fa-headphones-alt pulse"></i>
+            </div>
+            <p class="welcome-lead">Thank you for participating in our language listening research study.</p>
+            <div class="experiment-description">
+              <p>In this experiment, you will listen to a series of English sentences. Your task is to <strong>type the entire sentence you hear</strong>.</p>
+              <p>The entire experiment should take approximately 7 minutes to complete.</p>
+            </div>
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle"></i>
+              <p><strong>Important:</strong> You must use Google Chrome browser AND headphones or earbuds.</p>
+            </div>
+            
+            <div class="form-group browser-check compact">
+              <label>Are you using Google Chrome browser?</label>
+              <div class="radio-options">
+                <label class="radio-label">
+                  <input type="radio" name="browser-check" value="yes"> Yes
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="browser-check" value="no"> No
+                </label>
+              </div>
+              <div id="browser-warning" class="warning-text hidden">
+                <i class="fas fa-exclamation-triangle"></i> Google Chrome is required for this experiment.
+              </div>
+            </div>
+            
+            <div class="form-group headphone-check compact">
+              <label>Are you using headphones or earbuds?</label>
+              <div class="radio-options">
+                <label class="radio-label">
+                  <input type="radio" name="headphone-check" value="yes"> Yes
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="headphone-check" value="no"> No
+                </label>
+              </div>
+              <div id="headphone-warning" class="warning-text hidden">
+                <i class="fas fa-exclamation-triangle"></i> Headphones or earbuds are required for this experiment.
+              </div>
+            </div>
+            
+            <div class="consent-information" style="font-size: 0.8rem; margin-top: 1.5rem; padding: 1rem; background-color: #f8f9fa; border-radius: 0.5rem; max-height: 200px; overflow-y: auto; line-height: 1.3;">
+              <p><strong>Protocol Director:</strong> Robert Hawkins<br>
+              <strong>Protocol Title:</strong> Communication and social cognition in natural audiovisual contexts<br>
+              <strong>IRB# 77226</strong></p>
+              <p><strong>DESCRIPTION:</strong> You are invited to participate in a research study about language and communication. The purpose of the research is to understand how you interact and communicate with other people in naturalistic settings as a fluent English speaker. This research will be conducted through the Prolific platform, including participants from the US, UK, and Canada. If you decide to participate in this research, you will play a communication game in a group with one or more partners.</p>
+              <p><strong>TIME INVOLVEMENT:</strong> The task will last the amount of time advertised on Prolific. You are free to withdraw from the study at any time.</p>
+              <p><strong>RISKS AND BENEFITS:</strong> You may become frustrated if your partner gets distracted, or experience discomfort if other participants in your group send text that is inappropriate for the task. We ask you to please be respectful of other participants you might be interacting with to mitigate these risks. You may also experience discomfort when being asked to discuss or challenge emotionally salient political beliefs. Study data will be stored securely, in compliance with Stanford University standards, minimizing the risk of confidentiality breach. This study advances our scientific understanding of how people communication and collaborate in naturalistic settings. This study may lead to further insights about what can go wrong in teamwork, suggest potential interventions to overcome these barriers, and help to develop assistive technologies that collaborate with human partners. We cannot and do not guarantee or promise that you will receive any benefits from this study.</p>
+              <p><strong>PAYMENTS:</strong> You will receive payment in the amount advertised on Prolific. If you do not complete this study, you will receive prorated payment based on the time that you have spent. Additionally, you may be eligible for bonus payments as described in the instructions.</p>
+              <p><strong>PARTICIPANT'S RIGHTS:</strong> If you have read this form and have decided to participate in this project, please understand your participation is voluntary and you have the right to withdraw your consent or discontinue participation at any time without penalty or loss of benefits to which you are otherwise entitled. The alternative is not to participate. You have the right to refuse to answer particular questions. The results of this research study may be presented at scientific or professional meetings or published in scientific journals. Your individual privacy will be maintained in all published and written data resulting from the study. In accordance with scientific norms, the data from this study may be used or shared with other researchers for future research (after removing personally identifying information) without additional consent from you.</p>
+              <p><strong>CONTACT INFORMATION:</strong><br>
+              <strong>Questions:</strong> If you have any questions, concerns or complaints about this research, its procedures, risks and benefits, contact the Protocol Director, Robert Hawkins (rdhawkins@stanford.edu, 217-549-6923).<br>
+              <strong>Independent Contact:</strong> If you are not satisfied with how this study is being conducted, or if you have any concerns, complaints, or general questions about the research or your rights as a participant, please contact the Stanford Institutional Review Board (IRB) to speak to someone independent of the research team at 650-723-2480 or toll free at 1-866-680-2906, or email at irbnonmed@stanford.edu. You can also write to the Stanford IRB, Stanford University, 1705 El Camino Real, Palo Alto, CA 94306.</p>
+              <p>STANFORD UNIVERSITY Research Consent Form<br>
+              Protocol Director: Robert Hawkins<br>
+              Protocol Title: Communication and social cognition in natural audiovisual contexts<br>
+              IRB# 77226<br>
+              IRB Use Only<br>
+              Approval Date: October 18, 2024<br>
+              Expiration Date: September 30, 2025</p>
+              <p>Please save or print a copy of this page for your records. If you agree to participate in this research, please click "continue".</p>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button id="start-button" class="btn btn-primary btn-with-icon" disabled>
+              <span>Start Experiment</span>
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading Screen for Condition Assignment -->
+      <div id="loading-screen" class="screen-container">
+        <div class="card w-100">
+          <div class="card-header">
+            <h1>Preparing Experiment</h1>
+            <div class="header-decoration"></div>
+          </div>
+          <div class="card-body">
+            <div class="loading-container" style="text-align: center;">
+              <div class="loading-spinner" style="font-size: 3rem; margin-bottom: 1rem;">
+                <i class="fas fa-spinner fa-spin"></i>
+              </div>
+              <p>Please wait while we prepare your experiment...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Instructions Screen -->
+      <div id="instructions-screen" class="screen-container">
+        <div class="condition-info" id="condition-info"></div>
+        <div class="card w-100">
+          <div class="card-header">
+            <h1>Instructions</h1>
+            <div class="header-decoration"></div>
+          </div>
+          <div class="card-body">
+            <div class="instructions-container">
+              <p class="instructions-lead">Read the instructions carefully:</p>
+              <div class="instruction-steps">
+                <div class="instruction-step">
+                  <div class="step-number">1</div>
+                  <div class="step-content">
+                    <p>You will hear audio <b>exactly once</b>. Type the what you heard (even if it doesn't make sense!).</p> 
+                  </div>
+                </div>
+                <div class="instruction-step">
+                  <div class="step-number">2</div>
+                  <div class="step-content">
+                    <p><strong>Responses are not case-sensitive.</strong>. You do not need to use proper punctuation or capitalization.</p> 
+                  </div>
+                </div>
+                <div class="instruction-step">
+                  <div class="step-number">3</div>
+                  <div class="step-content">
+                    <p><strong>You can start typing while the audio is playing.</strong></p>
+                  </div>
+                </div>
+                <div class="instruction-step">
+                  <div class="step-number">4</div>
+                  <div class="step-content">
+                    <p>You will have <strong>only 15 seconds</strong> to complete your response after the audio finishes playing.</p>
+                  </div>
+                </div>
+                <div class="instruction-step">
+                  <div class="step-number">5</div>
+                  <div class="step-content">
+                    <p>There are two audio <b>attention checks</b> where you only need to type a single word.</p>
+                  </div>
+                </div>
+                <div class="instruction-step">
+                  <div class="step-number">6</div>
+                  <div class="step-content">
+                    <p><strong>Two strikes and you're out:</strong> Any combination of 2 failed attention checks or timeout errors may result in rejection.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button id="practice-button" class="btn btn-primary btn-with-icon">
+              <span>Try a Practice Trial</span>
+              <i class="fas fa-play"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice Trial Screen -->
+      <div id="practice-screen" class="screen-container">
+        <div class="card w-100">
+          <div class="card-header">
+            <div class="trial-header">
+              <h2>Practice Trial <span id="practice-current-trial">1</span> of 2</h2>
+              <div class="progress-container">
+                <div id="progress-bar-practice" class="progress-bar" style="width: 30%;">Practice</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle"></i>
+              <p><strong>Practice:</strong> These are practice trials to help you understand the task.</p>
+            </div>
+            <div class="trial-body">
+              <!-- Practice Trial 1 -->
+              <div id="practice-trial-1" class="practice-trial-section">
+                <div class="audio-section">
+                  <div class="audio-controls">
+                    <div id="practice-audio-indicator-1" class="audio-indicator stopped"></div>
+                    <div class="response-timer">
+                       <svg viewBox="0 0 100 100" class="donut" id="practice-timer-svg-1">
+                         <circle cx="50" cy="50" r="45" class="donut-ring"></circle>
+                         <circle cx="50" cy="50" r="45" class="donut-segment" id="practice-donut-segment-1"></circle>
+                         <text x="50" y="55" text-anchor="middle" class="donut-text" id="practice-timer-text-1">15</text>
+                       </svg>
+                       <span class="visually-hidden" id="practice-timer-sr-text-1">15 seconds remaining</span>
+                    </div>
+                  </div>
+                  <div id="practice-audio-status-1" class="audio-status">Preparing practice audio...</div>
+                </div>
+                <div class="response-section w-100">
+                  <input type="text" id="practice-typed-response-1" class="typed-response-input" placeholder="Type the what you heard" disabled>
+                </div>
+              </div>
+
+              <!-- Practice Trial 2 -->
+              <div id="practice-trial-2" class="practice-trial-section" style="display: none;">
+                <div class="audio-section">
+                  <div class="audio-controls">
+                    <div id="practice-audio-indicator-2" class="audio-indicator stopped"></div>
+                    <div class="response-timer">
+                       <svg viewBox="0 0 100 100" class="donut" id="practice-timer-svg-2">
+                         <circle cx="50" cy="50" r="45" class="donut-ring"></circle>
+                         <circle cx="50" cy="50" r="45" class="donut-segment" id="practice-donut-segment-2"></circle>
+                         <text x="50" y="55" text-anchor="middle" class="donut-text" id="practice-timer-text-2">15</text>
+                       </svg>
+                       <span class="visually-hidden" id="practice-timer-sr-text-2">15 seconds remaining</span>
+                    </div>
+                  </div>
+                  <div id="practice-audio-status-2" class="audio-status">Preparing practice audio...</div>
+                </div>
+                <div class="response-section w-100">
+                  <input type="text" id="practice-typed-response-2" class="typed-response-input" placeholder="Type the entire sentence you heard" disabled>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="trial-navigation">
+              <button id="practice-next-button" class="btn btn-secondary btn-with-icon" disabled>
+                <span>Next Practice (or press ENTER)</span>
+                <i class="fas fa-arrow-right"></i>
+              </button>
+              <button id="begin-experiment-button" class="btn btn-primary btn-with-icon" disabled style="display: none;">
+                <span>Complete Practice</span>
+                <i class="fas fa-check"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice Complete / Ready Screen -->
+      <div id="practice-complete-screen" class="screen-container">
+        <div class="card w-100">
+          <div class="card-header">
+            <div class="progress-container">
+              <div id="progress-bar-ready" class="progress-bar" style="width: 50%;">Ready to Begin</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="completion-container">
+              <div class="completion-icon">
+                <i class="fas fa-check-circle" style="color: var(--success);"></i>
+              </div>
+              <div class="completion-message">
+                <p class="completion-lead">Great job! You've completed the practice trials.</p>
+                <p>You're now ready to begin the main experiment.</p>
+                <p>Are you ready to proceed?</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button id="continue-to-experiment-button" class="btn btn-primary btn-with-icon">
+              <span>Begin Main Experiment</span>
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trial Screen -->
+      <div id="trial-screen" class="screen-container">
+        <div class="card w-100">
+          <div class="card-header">
+            <div class="trial-header">
+              <h2>Trial <span id="current-trial">1</span> of <span id="total-trials">32</span></h2> <!-- Total trials will be 30 + 2 attention checks -->
+              <div class="progress-container">
+                <div id="progress-bar" class="progress-bar" style="width: 0%;">0%</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="trial-body">
+              <div class="audio-section">
+                <div class="audio-controls">
+                  <div id="audio-indicator" class="audio-indicator stopped"></div>
+                  <div class="response-timer">
+                     <svg viewBox="0 0 100 100" class="donut" id="timer-svg">
+                       <circle cx="50" cy="50" r="45" class="donut-ring"></circle>
+                       <circle cx="50" cy="50" r="45" class="donut-segment" id="donut-segment"></circle>
+                       <text x="50" y="55" text-anchor="middle" class="donut-text" id="timer-text">15</text>
+                     </svg>
+                     <span class="visually-hidden" id="timer-sr-text">15 seconds remaining</span>
+                  </div>
+                </div>
+                <div id="audio-status" class="audio-status">Audio will play automatically...</div>
+              </div>
+
+              <div class="response-section w-100">
+                <div id="blanked-sentence-display" class="blanked-sentence-container" style="display: none;">Sentence will appear after audio.</div>
+                <input type="text" id="typed-response-input" class="typed-response-input" placeholder="Type the entire sentence you heard" disabled>
+                <div id="trial-feedback" class="trial-feedback w-100"></div> <!-- This is generally empty for main trials -->
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="trial-navigation">
+              <button id="next-button" class="btn btn-primary btn-with-icon" disabled>
+                <span>Next (or press ENTER)</span>
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Termination Screen (NEW) -->
+      <div id="termination-screen" class="screen-container">
+        <div class="card w-100">
+          <div class="card-header">
+            <h1>Experiment Ended Early</h1>
+            <div class="header-decoration"></div>
+          </div>
+          <div class="card-body">
+            <div class="termination-container" style="text-align: center;">
+              <div class="termination-icon">
+                <i class="fas fa-exclamation-circle"></i>
+              </div>
+              <div class="termination-message">
+                <p class="termination-lead">The experiment has ended early.</p>
+                <p>You accumulated two strikes (missed attention checks or timeouts) in the first half of the experiment.</p>
+                <p>Your responses have been saved, but this submission will be returned.</p>
+                <p style="margin-top: 1.5rem;">Please click below to get your completion code.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button id="termination-payment-btn" class="btn btn-primary btn-with-icon">
+              <span>Get Payment Code</span>
+              <i class="fas fa-money-bill-wave"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exit Survey Screen -->
+      <div id="exit-survey-screen" class="screen-container">
+        <div class="card w-100">
+          <div class="card-header">
+            <h1>Exit Survey</h1>
+            <div class="header-decoration"></div>
+            <div class="progress-container">
+              <div id="progress-bar-survey" class="progress-bar" style="width: 90%;">Almost Done</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="survey-container">
+              <div class="form-group">
+                <label for="first-language">What is your first language?</label>
+                <input type="text" id="first-language" class="form-control" placeholder="e.g., English, Spanish, Mandarin">
+              </div>
+
+              <div class="form-group">
+                <label>What is your gender?</label>
+                <div class="radio-options">
+                  <label class="radio-label"><input type="radio" name="gender" value="male"> Male</label>
+                  <label class="radio-label"><input type="radio" name="gender" value="female"> Female</label>
+                  <label class="radio-label"><input type="radio" name="gender" value="other"> Other / Prefer not to say</label>
+                </div>
+              </div>
+              
+              <div class="form-group" id="english-learning-time-container" style="display: none;">
+                <label for="english-learning-time">How many years ago did you start learning English?</label>
+                <input type="number" id="english-learning-time" class="form-control" placeholder="e.g., 5" min="0" max="100">
+              </div>
+              
+              <div class="form-group">
+                <label for="english-learning-country">Where did you learn English? (country)</label>
+                <input type="text" id="english-learning-country" class="form-control" placeholder="e.g., United States, Canada, Australia">
+              </div>
+              
+              <div class="form-group">
+                <label for="other-languages">Which languages besides English do you have regular exposure to?</label>
+                <input type="text" id="other-languages-input" class="form-control" placeholder="e.g., Spanish, French, Mandarin">
+                <small class="text-muted">Please enter languages separated by commas. Leave blank if none.</small>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button id="submit-survey-button" class="btn btn-primary btn-with-icon">
+              <span>Submit Survey</span>
+              <i class="fas fa-check"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Score Screen (UPDATED) -->
+      <div id="score-screen" class="screen-container">
+        <div class="card w-100">
+          <div class="card-header">
+            <h1>Thank You!</h1>
+            <div class="header-decoration"></div>
+          </div>
+          <div class="card-body" style="text-align: center;">
+            <div class="score-ring">
+              <i class="fas fa-check"></i>
+            </div>
+            <p id="score-msg" style="margin-bottom: 1.5rem; font-size: 1.1rem;">Thank you for completing the experiment!</p>
+            <button id="payment-button" class="btn btn-primary">Continue to payment</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completion Screen -->
+      <div id="completion-screen" class="screen-container">
+        <div class="card w-100">
+          <div class="card-header">
+            <h1>Experiment Complete</h1>
+            <div class="header-decoration"></div>
+            <div class="progress-container">
+              <div id="progress-bar-complete" class="progress-bar" style="width: 100%;">Complete</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="completion-container">
+              <div class="completion-icon">
+                <i class="fas fa-check-circle pulse"></i>
+              </div>
+              <div class="completion-message">
+                <p class="completion-lead">Thank you for participating in this experiment!</p>
+                <p>Your responses have been recorded.</p>
+                <p>If you have any questions about this study, please contact the research team.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button id="show-payment-button" class="btn btn-primary btn-with-icon">
+              <span>Get Payment Code</span>
+              <i class="fas fa-money-bill-wave"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Payment Code Screen -->
+      <div id="payment-screen" class="screen-container">
+        <div class="card w-100">
+          <div class="card-header">
+            <h1>Your Payment Code</h1>
+            <div class="header-decoration"></div>
+          </div>
+          <div class="card-body">
+            <div class="completion-container">
+              <div class="completion-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="completion-message">
+                <p class="completion-lead">Please enter this code on Prolific:</p>
+                <div class="code-container">
+                  <div class="payment-code" id="payment-code">CCAJMZ3R</div>
+                  <button class="copy-btn" id="copy-code-btn">
+                    <i class="fas fa-copy"></i>
+                    <span>Copy Code</span>
+                  </button>
+                  <div class="copy-success" id="copy-success">Code copied to clipboard!</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button id="exit-button" class="btn btn-secondary btn-with-icon">
+              <span>Close</span>
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/experiment-config.js"></script>
+  <script src="js/experiment.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const showPaymentButton = document.getElementById('show-payment-button');
+      const copyCodeBtn = document.getElementById('copy-code-btn');
+      const exitButton = document.getElementById('exit-button');
+      const terminationPaymentBtn = document.getElementById('termination-payment-btn');
+      
+      function showPaymentScreenUI() { // Renamed to avoid conflict with experiment.js
+        // Make sure decidePaymentCode is available from experiment.js
+        if (typeof decidePaymentCode === 'function') {
+            document.getElementById('payment-code').textContent = decidePaymentCode();
+        } else {
+            console.error("decidePaymentCode function not found. Using default.");
+            document.getElementById('payment-code').textContent = 'CCAJMZ3R'; // Fallback
+        }
+        
+        const completionScreenEl = document.getElementById('completion-screen');
+        const paymentScreenEl = document.getElementById('payment-screen');
+
+        if(completionScreenEl) completionScreenEl.style.display = 'none';
+        if(paymentScreenEl) {
+            paymentScreenEl.classList.add('active');
+            paymentScreenEl.style.display = 'flex';
+        }
+      }
+      
+      function copyCodeToClipboard() {
+        const codeElement = document.getElementById('payment-code');
+        const codeText = codeElement.textContent;
+        
+        navigator.clipboard.writeText(codeText).then(() => {
+          const successMsg = document.getElementById('copy-success');
+          successMsg.classList.add('visible');
+          setTimeout(() => {
+            successMsg.classList.remove('visible');
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy: ', err);
+          // Fallback for older browsers
+          try {
+            const tempElement = document.createElement('textarea');
+            tempElement.value = codeText;
+            tempElement.style.position = 'absolute';
+            tempElement.style.left = '-9999px';
+            document.body.appendChild(tempElement);
+            tempElement.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempElement);
+            const successMsg = document.getElementById('copy-success');
+            successMsg.classList.add('visible');
+            setTimeout(() => { successMsg.classList.remove('visible'); }, 2000);
+          } catch (e) {
+            alert('Failed to copy code. Please copy it manually.');
+          }
+        });
+      }
+      
+      if (showPaymentButton) {
+        showPaymentButton.addEventListener('click', showPaymentScreenUI);
+      }
+      
+      if (copyCodeBtn) {
+        copyCodeBtn.addEventListener('click', copyCodeToClipboard);
+      }
+      
+      if (terminationPaymentBtn) {
+        terminationPaymentBtn.addEventListener('click', function() {
+          // This should trigger the payment screen from the termination screen
+          if (typeof decidePaymentCode === 'function') {
+            document.getElementById('payment-code').textContent = decidePaymentCode();
+          }
+          const terminationScreenEl = document.getElementById('termination-screen');
+          const paymentScreenEl = document.getElementById('payment-screen');
+          
+          if(terminationScreenEl) terminationScreenEl.style.display = 'none';
+          if(paymentScreenEl) {
+            paymentScreenEl.classList.add('active');
+            paymentScreenEl.style.display = 'flex';
+          }
+        });
+      }
+      
+      if (exitButton) {
+        exitButton.addEventListener('click', function() {
+          // Try to close the window/tab
+          window.close();
+          // Fallback if window.close() is blocked
+          setTimeout(() => {
+            if (document.getElementById('payment-screen')) {
+                document.getElementById('payment-screen').style.display = 'none';
+            }
+            if (document.getElementById('welcome-screen')) {
+                document.getElementById('welcome-screen').style.display = 'flex';
+                 // Potentially call a reset function from experiment.js if available
+                if (typeof resetExperiment === 'function') {
+                    // resetExperiment(); // Be careful with this, ensure it's intended.
+                }
+            }
+          }, 100); // Small delay to allow close to attempt
+        });
+      }
+    });
+  </script>
+</body>
+</html>

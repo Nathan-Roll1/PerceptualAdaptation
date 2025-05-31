@@ -1,5 +1,0 @@
-{
-    "original_sentence": "Its diameter was not more than two hundred yards",
-    "blanked_sentence": "its diameter was not more ______ yards",
-    "actual": "than two hundred"
-}

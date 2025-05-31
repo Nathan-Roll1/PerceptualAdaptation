@@ -1,0 +1,5 @@
+{
+    "original_sentence": "If not let's say our prayers and go to bed",
+    "blanked_sentence": "if not let's ______ and go to bed",
+    "actual": "say our prayers"
+}

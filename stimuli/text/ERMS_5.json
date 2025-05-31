@@ -1,0 +1,5 @@
+{
+    "original_sentence": "The men stared into each other's face",
+    "blanked_sentence": "the ______ stared into each other's face",
+    "actual": "men"
+}

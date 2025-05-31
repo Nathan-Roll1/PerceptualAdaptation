@@ -1,0 +1,5 @@
+{
+    "original_sentence": "The night glow was treacherous to shoot by",
+    "blanked_sentence": "the night ______ was treacherous to shoot by",
+    "actual": "glow"
+}
