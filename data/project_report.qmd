@@ -1,6 +1,6 @@
 ---
 title: "Replication of 'Generalized perceptual adaptation to second-language speech: Variability, similarity, and intelligibility' by Bradlow, Bassard, & Paller (2023, J. Acoust. Soc. Am.)"
-author: "Nathan Roll, Meghan Sumner, Emily Goodwin, Robert Hawkins"
+author: "Nathan Roll, Emily Goodwin, Meghan Sumner, Robert Hawkins"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output:
   html_document:
@@ -201,9 +201,8 @@ Key differences from Bradlow et al. (2023):
 ### Data Preparation
 
 ```{r data-prep, message=FALSE}
-
 # Load the data
-df_main <- read_csv("~/Documents/df_main.csv", show_col_types = FALSE)
+df_main <- read_csv("~/Documents/PerceptualAdaptation/data/df_main.csv", show_col_types = FALSE)
 
 # Note about data exclusions
 cat("Initial Prolific submissions: 1,370 (no early timeouts or attention check failures)
@@ -255,15 +254,30 @@ summary_stats <- df_main %>%
     .groups = 'drop'
   )
 
-# Display summary table
-summary_stats %>%
+# Create separate tables for each phase and join
+training_stats <- summary_stats %>%
+  filter(phase == "Training") %>%
   mutate(
     condition_label = condition_labels[condition],
-    accuracy_pct = sprintf("%.1f%% (±%.1f%%)", mean_accuracy * 100, se_accuracy * 100)
+    training_acc = sprintf("%.1f%% (±%.1f%%)", mean_accuracy * 100, se_accuracy * 100)
   ) %>%
-  select(condition_label, phase, accuracy_pct, n) %>%
-  pivot_wider(names_from = phase, values_from = c(accuracy_pct, n)) %>%
-  format_table(col.names = c("Condition", "Training Accuracy", "Testing Accuracy", "N (Training)", "N (Testing)"))
+  select(condition_label, training_acc, training_n = n)
+
+testing_stats <- summary_stats %>%
+  filter(phase == "Testing") %>%
+  mutate(
+    condition_label = condition_labels[condition],
+    testing_acc = sprintf("%.1f%% (±%.1f%%)", mean_accuracy * 100, se_accuracy * 100)
+  ) %>%
+  select(condition_label, testing_acc, testing_n = n)
+
+# Join the tables
+summary_table <- training_stats %>%
+  left_join(testing_stats, by = "condition_label") %>%
+  select(condition_label, training_acc, testing_acc, training_n, testing_n)
+
+format_table(summary_table, 
+            col.names = c("Condition", "Training Accuracy", "Testing Accuracy", "N (Training)", "N (Testing)"))
 ```
 
 #### Primary Visualization 1: Relative Adaptation Benefit by Condition
@@ -302,6 +316,15 @@ adaptation_summary <- adaptation_summary %>%
   ) %>%
   arrange(benefit_centered)
 
+# Print raw adaptation benefits before centering
+cat("\nRaw Adaptation Benefits (Testing - Training):\n")
+for(i in 1:nrow(adaptation_summary)) {
+  cat(sprintf("%s: %.2f%%\n", 
+              adaptation_summary$condition_label[i], 
+              adaptation_summary$benefit_pct[i]))
+}
+cat(sprintf("\nOverall mean adaptation: %.2f%%\n", overall_mean * 100))
+
 # Create the plot
 p1 <- ggplot(adaptation_summary, aes(x = reorder(condition_label, benefit_centered), 
                                      y = benefit_centered)) +
@@ -317,7 +340,8 @@ p1 <- ggplot(adaptation_summary, aes(x = reorder(condition_label, benefit_center
   labs(
     x = "",
     y = "Relative Adaptation Benefit (%)",
-    title = "Adaptation Benefit by Condition"
+    title = "Adaptation Benefit by Condition",
+    subtitle = sprintf("Centered on overall mean (%.2f%%)", overall_mean * 100)
   ) +
   scale_y_continuous(limits = c(-2.5, 2.5)) +
   theme_minimal(base_size = 14) +
@@ -602,7 +626,7 @@ if(length(costs) == 2) {
 
 This partial replication of Bradlow et al. (2023) examined perceptual adaptation to L2-accented speech across six experimental conditions manipulating speaker variability during training and testing phases. From 1,370 complete Prolific submissions, 917 participants (33.1% exclusion rate) met our preregistered inclusion criteria, providing approximately 153 participants per condition. Despite the higher-than-anticipated exclusion rate, this sample size still provided adequate statistical power (75%) to detect effects comparable to those in the original study.
 
-Our primary finding supports the original study's conclusion that exposure configuration significantly impacts perceptual adaptation. The relative adaptation benefit analysis revealed substantial variation across conditions, with some showing positive adaptation (improved performance from training to testing) and others showing negative adaptation costs. Notably, the "same speaker" condition showed the highest testing phase accuracy, supporting the hypothesis that talker-specific training can be highly effective for perceptual learning.
+Our primary finding supports the original study's conclusion that exposure configuration significantly impacts perceptual adaptation. Notably, we observed an overall improvement from training (86.6%) to testing (87.3%) phases, indicating general perceptual learning across the experiment. The relative adaptation benefit analysis revealed substantial variation across conditions around this positive mean, with most conditions showing small positive adaptations. The Multi→Single condition was the notable exception, showing a negative adaptation effect relative to other conditions. Importantly, the "same speaker" condition showed the highest overall testing phase accuracy (as shown in the H1 analysis), supporting the hypothesis that talker-specific training can be highly effective for perceptual learning.
 
 ### Commentary
 
@@ -625,4 +649,4 @@ Several limitations should be noted:
 
 Future work should explore the time course of adaptation with multiple testing intervals and investigate whether these adaptation patterns hold for more naturalistic, conversational speech materials.
 
-This replication provides converging evidence that perceptual adaptation to L2 speech is significantly influenced by the variability of training exposure, where individual talker variation eclipses variety-level effects.
+This replication provides converging evidence that perceptual adaptation to L2 speech is significantly influenced by the variability of training exposure, with important implications for language learning and cross-cultural communication contexts.
